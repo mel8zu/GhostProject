@@ -30,7 +30,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
 
         background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.pug), 0, 0, 5);
-        character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.androidguy), 300, 300);
+        character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14);
         up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 400, 800);
         left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 200, 1000);
         right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 600, 1000);
@@ -98,6 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         background.update();
+        character.update(System.currentTimeMillis(),background.getDirection());
     }
 
     @Override
