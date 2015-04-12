@@ -8,17 +8,20 @@ import android.graphics.Rect;
  * Created by Student User on 4/8/2015.
  */
 public class Character {
-    private int x;
-    private int y;
-    private Bitmap bitmap;
-    private Rect sourceRect;
-    private int frameNr;
-    private int currentFrame;
-    private long frameTicker;
-    private int framePeriod;
-    private int spriteWidth;
-    private int spriteHeight;
+    private int x; //x location
+    private int y; //y location
+    private Bitmap bitmap; //holds the spritesheet
+    private Rect sourceRect; //Rectangle that tells where to cut a sprite from the spritesheet
+    private int frameNr; //Number of sprites in the spritesheet
+    private int currentFrame; //Keeps track of which sprite in a sequence we are currently cutting out
+    private long frameTicker; //Time of the ;ast update
+    private int framePeriod; //How long between updates
+    private int spriteWidth; //width of a sprite
+    private int spriteHeight; //height of a sprite
 
+    /*
+    Constructor
+     */
     public Character(Bitmap bitmap, int x, int y, int fps, int frameNr) {
         this.bitmap = bitmap;
         this.x = x;
@@ -32,6 +35,7 @@ public class Character {
         frameTicker = 1;
     }
 
+    /*Getters and setters*/
     public int getX() {
         return x;
     }
@@ -111,7 +115,10 @@ public class Character {
     public void setSpriteHeight(int spriteHeight) {
         this.spriteHeight = spriteHeight;
     }
-
+    /*
+    Updates character once per frame period
+     Takes a direction (0=still,1=up,2=left,3=right,4=down) to determine which sprite to print
+    */
     public void update(long gameTime, int direction) {
         if (gameTime > frameTicker + framePeriod) {
             if (direction == 4) {
@@ -151,7 +158,11 @@ public class Character {
             }
         }
     }
-
+    /*
+    draws the sprite to the screen
+    sourceRect tells which which image to cut out of the sprite sheet
+    destRect tells where to print the image on the screen
+     */
     public void draw(Canvas canvas) {
         Rect destRect = new Rect(getX(), getY(), getX() + spriteWidth, getY() + spriteHeight);
         canvas.drawBitmap(bitmap, sourceRect, destRect, null);
