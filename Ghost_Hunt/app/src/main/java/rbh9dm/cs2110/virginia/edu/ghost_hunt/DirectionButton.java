@@ -53,7 +53,7 @@ public class DirectionButton {
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x , y, null);
     }
-
+    /*Checks if the user has touched inside the boundaries of the button*/
     public void handleActionDown(int eventX, int eventY) {
         if(eventX >= x && eventX <= x+bitmap.getWidth()) {
             if(eventY >= y && eventY <= y+bitmap.getHeight()) {
