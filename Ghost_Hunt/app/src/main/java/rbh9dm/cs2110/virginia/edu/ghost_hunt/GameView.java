@@ -24,7 +24,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DirectionButton left;
     private DirectionButton right;
     private DirectionButton down;
-
+    private ArrayList<Bullet> bulletList;
+    private long lastShot;
+    /*
+    Constructor: where the stuff that appears on screen is declared
+     */
     public GameView(Context context) {
         super(context);
         getHolder().addCallback(this);
@@ -35,6 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 200, 1000);
         right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 600, 1000);
         down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 400, 1200);
+        bulletList = new ArrayList<Bullet>();
 
         thread = new GameThread(getHolder(), this);
 
@@ -63,7 +68,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
-
+    /*
+    When the screen is touched, this method tells the game what to do
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -85,6 +92,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         }
                         else {
                             background.setDirection(0);
+                            if (System.currentTimeMillis() > lastShot + 1000) {
+                                bulletList.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), character, 10, event.getX(), event.getY()));
+                                lastShot = System.currentTimeMillis();
+                            }
                         }
                     }
                 }
@@ -95,12 +106,46 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         return true;
     }
-
+    /*
+    Where everything is updated. Called once per run through the game loop
+     */
     public void update() {
         background.update();
         character.update(System.currentTimeMillis(),background.getDirection());
+                Iterator<Bullet> iterator = bulletList.iterator();
+        while(iterator.hasNext()) {
+            Bullet b = iterator.next();
+            int dir = background.getDirection();
+            if (dir == 0) {
+                b.update();
+            }
+            else if (dir == 1) {
+                b.setyVelocity(b.getyVelocity() + background.getSpeed());
+                b.update();
+                b.setyVelocity(b.getyVelocity() - background.getSpeed());
+            }
+            else if (dir == 2) {
+                b.setxVelocity(b.getxVelocity() + background.getSpeed());
+                b.update();
+                b.setxVelocity(b.getxVelocity() - background.getSpeed());
+            }
+            else if (dir == 3) {
+                b.setxVelocity(b.getxVelocity() - background.getSpeed());
+                b.update();
+                b.setxVelocity(b.getxVelocity() + background.getSpeed());
+            }
+            else if (dir == 4) {
+                b.setyVelocity(b.getyVelocity() + background.getSpeed());
+                b.update();
+                b.setyVelocity(b.getyVelocity() - background.getSpeed());
+            }
+            if(b.getDistance()>300)
+                iterator.remove();
+        }
     }
-
+    /*
+    Method that calls each thing's draw method so as to display each thing on the screen
+     */
     @Override
     public void draw(Canvas canvas) {
         canvas.drawColor(Color.BLACK);
@@ -110,6 +155,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         left.draw(canvas);
         down.draw(canvas);
         right.draw(canvas);
+        for(Bullet b : bulletList) {
+            b.draw(canvas);
+        }
     }
 
 
