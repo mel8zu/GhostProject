@@ -1,16 +1,14 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.Button;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Student User on 4/7/2015.
