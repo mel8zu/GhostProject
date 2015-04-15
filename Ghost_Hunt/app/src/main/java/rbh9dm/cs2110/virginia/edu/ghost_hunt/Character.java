@@ -8,21 +8,26 @@ import android.graphics.Rect;
  * Created by Student User on 4/8/2015.
  */
 public class Character {
-    private int x; //x location
-    private int y; //y location
-    private Bitmap bitmap; //holds the spritesheet
-    private Rect sourceRect; //Rectangle that tells where to cut a sprite from the spritesheet
-    private int frameNr; //Number of sprites in the spritesheet
-    private int currentFrame; //Keeps track of which sprite in a sequence we are currently cutting out
-    private long frameTicker; //Time of the ;ast update
-    private int framePeriod; //How long between updates
-    private int spriteWidth; //width of a sprite
-    private int spriteHeight; //height of a sprite
+    protected int x; //x location
+    protected int y; //y location
+    protected Bitmap bitmap; //holds the spritesheet
+    protected Rect sourceRect; //Rectangle that tells where to cut a sprite from the spritesheet
+    protected int frameNr; //Number of sprites in the spritesheet
+    protected int currentFrame; //Keeps track of which sprite in a sequence we are currently cutting out
+    protected long frameTicker; //Time of the ;ast update
+    protected int framePeriod; //How long between updates
+    protected int spriteWidth; //width of a sprite
+    protected int spriteHeight; //height of a sprite
+    protected int numStill;
+    protected int numUp;
+    protected int numLeft;
+    protected int numRight;
+    protected int numDown;
 
     /*
     Constructor
      */
-    public Character(Bitmap bitmap, int x, int y, int fps, int frameNr) {
+    public Character(Bitmap bitmap, int x, int y, int fps, int frameNr, int numStill, int numUp, int numLeft, int numRight, int numDown) {
         this.bitmap = bitmap;
         this.x = x;
         this.y = y;
@@ -33,6 +38,11 @@ public class Character {
         sourceRect = new Rect(0,0,spriteWidth,spriteHeight);
         framePeriod = 1000/fps;
         frameTicker = 1;
+        this.numStill = numStill;
+        this.numUp = numUp;
+        this.numLeft = numLeft;
+        this.numRight = numRight;
+        this.numDown = numDown;
     }
 
     /*Getters and setters*/
@@ -122,35 +132,35 @@ public class Character {
     public void update(long gameTime, int direction) {
         if (gameTime > frameTicker + framePeriod) {
             if (direction == 4) {
-                if (currentFrame > 1)
+                if (currentFrame > numDown - 1)
                     currentFrame = 0;
-                this.sourceRect.left = 6*spriteWidth + currentFrame * spriteWidth;
+                this.sourceRect.left = (numStill)*spriteWidth + currentFrame * spriteWidth;
                 this.sourceRect.right = this.sourceRect.left + spriteWidth;
                 currentFrame++;
             }
             else if (direction == 2) {
-                if (currentFrame > 1)
+                if (currentFrame > numLeft - 1)
                     currentFrame = 0;
-                this.sourceRect.left = 12*spriteWidth + currentFrame * spriteWidth;
+                this.sourceRect.left = (numStill + numUp + numDown + numRight)*spriteWidth + currentFrame * spriteWidth;
                 this.sourceRect.right = this.sourceRect.left + spriteWidth;
                 currentFrame++;
             }
             else if (direction == 3) {
-                if (currentFrame > 1)
+                if (currentFrame > numRight - 1)
                     currentFrame = 0;
-                this.sourceRect.left = 10*spriteWidth + currentFrame * spriteWidth;
+                this.sourceRect.left = (numStill + numDown + numUp)*spriteWidth + currentFrame * spriteWidth;
                 this.sourceRect.right = this.sourceRect.left + spriteWidth;
                 currentFrame++;
             }
             else if (direction == 1) {
-                if (currentFrame > 1)
+                if (currentFrame > numUp - 1)
                     currentFrame = 0;
-                this.sourceRect.left = 8*spriteWidth + currentFrame * spriteWidth;
+                this.sourceRect.left = (numStill + numDown)*spriteWidth + currentFrame * spriteWidth;
                 this.sourceRect.right = this.sourceRect.left + spriteWidth;
                 currentFrame++;
             }
             else {
-                if (currentFrame > 5)
+                if (currentFrame > numStill - 1)
                     currentFrame = 0;
                 this.sourceRect.left = 0*spriteWidth + currentFrame * spriteWidth;
                 this.sourceRect.right = this.sourceRect.left + spriteWidth;

@@ -39,6 +39,14 @@ public class Moveable {
         this.yCoord = yCoord;
     }
 
+    public int getWidth() {
+        return bitmap.getWidth();
+    }
+
+    public int getHeight() {
+        return bitmap.getHeight();
+    }
+
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, xCoord, yCoord, null);
     }

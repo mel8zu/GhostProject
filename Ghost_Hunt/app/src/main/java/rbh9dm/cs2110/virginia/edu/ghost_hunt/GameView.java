@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,8 +23,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DirectionButton left;
     private DirectionButton right;
     private DirectionButton down;
+    private HealthBar health;
     private ArrayList<Bullet> bulletList;
+    private ArrayList<Ghost> ghostList;
     private long lastShot;
+    private int score;
+    private Paint paint;
     /*
     Constructor: where the stuff that appears on screen is declared
      */
@@ -32,12 +37,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
 
         background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.pug), 0, 0, 5);
-        character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14);
+        character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14,6,2,2,2,2);
         up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 400, 800);
         left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 200, 1000);
         right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 600, 1000);
         down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 400, 1200);
+        health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10);
         bulletList = new ArrayList<Bullet>();
+        ghostList = new ArrayList<Ghost>();
+        initCreateGhosts();
+        score = 0;
+        paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(60);
 
         thread = new GameThread(getHolder(), this);
 
@@ -65,6 +77,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             }
         }
+    }
+    public void initCreateGhosts() {
+        Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), 100, 100, 3, 9, 1,2,2,2,2, 8, 0.6, background);
+        ghostList.add(ghost1);
     }
     /*
     When the screen is touched, this method tells the game what to do
@@ -140,6 +156,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if(b.getDistance()>300)
                 iterator.remove();
         }
+        for(Ghost g : ghostList) {
+            g.update(System.currentTimeMillis());
+        }
     }
     /*
     Method that calls each thing's draw method so as to display each thing on the screen
@@ -156,8 +175,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for(Bullet b : bulletList) {
             b.draw(canvas);
         }
+        for(Ghost g : ghostList) {
+            g.draw(canvas);
+        }
+        health.draw(canvas);
+        canvas.drawText(("00000000"+score).substring((""+score).length()),750, 50, paint);
     }
-
-
-
 }
