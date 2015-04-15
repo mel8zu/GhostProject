@@ -53,13 +53,6 @@ public class Ghost extends Character  {
     public void setyVelocity(double yVelocity) {
         this.yVelocity = yVelocity;
     }
-    public int getWidth() {
-        return bitmap.getWidth();
-    }
-
-    public int getHeight() {
-        return bitmap.getHeight();
-    }
 
     public void posYVelocity() {
         yVelocity = Math.abs(yVelocity);
@@ -146,13 +139,13 @@ public class Ghost extends Character  {
             if (x< background.getXCoord()+2) {
                 posXVelocity();
             }
-            else if (x+getWidth()>background.getXCoord()+background.getWidth()-2) {
+            else if (x+spriteWidth>background.getXCoord()+background.getWidth()-2) {
                 negXVelocity();
             }
             if (y< background.getYCoord()+2) {
                 posYVelocity();
             }
-            else if (y+getHeight()>background.getYCoord()+background.getHeight()-2) {
+            else if (y+spriteHeight>background.getYCoord()+background.getHeight()-2) {
                 negYVelocity();
             }
         }
