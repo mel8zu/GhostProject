@@ -53,13 +53,28 @@ public class Ghost extends Character  {
     public void setyVelocity(double yVelocity) {
         this.yVelocity = yVelocity;
     }
-
-    public void toggleYVelocity() {
-        yVelocity = -yVelocity;
+    public int getWidth() {
+        return bitmap.getWidth();
     }
 
-    public void toggleXVelocity() {
-        xVelocity = -xVelocity;
+    public int getHeight() {
+        return bitmap.getHeight();
+    }
+
+    public void posYVelocity() {
+        yVelocity = Math.abs(yVelocity);
+    }
+
+    public void posXVelocity() {
+        xVelocity = Math.abs(xVelocity);
+    }
+
+    public void negYVelocity() {
+        yVelocity = -Math.abs(yVelocity);
+    }
+
+    public void negXVelocity() {
+        xVelocity = -Math.abs(xVelocity);
     }
 
     public void adjustSpeed(int direction) {
@@ -128,11 +143,17 @@ public class Ghost extends Character  {
             y+=yVelocity;
             reset(direction);
 
-            if (x< background.getXCoord()+2 || x>background.getXCoord()+background.getWidth()-2) {
-                toggleXVelocity();
+            if (x< background.getXCoord()+2) {
+                posXVelocity();
             }
-            if (y< background.getYCoord()+2 || y>background.getYCoord()+background.getHeight()-2) {
-                toggleYVelocity();
+            else if (x+getWidth()>background.getXCoord()+background.getWidth()-2) {
+                negXVelocity();
+            }
+            if (y< background.getYCoord()+2) {
+                posYVelocity();
+            }
+            else if (y+getHeight()>background.getYCoord()+background.getHeight()-2) {
+                negYVelocity();
             }
         }
     }
