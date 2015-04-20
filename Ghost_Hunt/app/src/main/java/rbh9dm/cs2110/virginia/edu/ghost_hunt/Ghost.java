@@ -22,6 +22,9 @@ public class Ghost extends Character  {
         this.background = background;
     }
 
+    /*
+    Getters & Setter
+     */
     public int getSpeed() {
         return speed;
     }
@@ -54,22 +57,35 @@ public class Ghost extends Character  {
         this.yVelocity = yVelocity;
     }
 
+    /*
+    makes yVelocity positive
+     */
     public void posYVelocity() {
         yVelocity = Math.abs(yVelocity);
     }
 
+    /*
+    makes xVelocity positive
+     */
     public void posXVelocity() {
         xVelocity = Math.abs(xVelocity);
     }
-
+    /*
+    makes yVelocity negative
+    */
     public void negYVelocity() {
         yVelocity = -Math.abs(yVelocity);
     }
-
+    /*
+    makes xVelocity negative
+    */
     public void negXVelocity() {
         xVelocity = -Math.abs(xVelocity);
     }
 
+    /*
+    Adjusts x and y velocities based on the direction the background is going
+     */
     public void adjustSpeed(int direction) {
         if (direction == 4) {
             yVelocity = yVelocity - background.getSpeed();
@@ -85,6 +101,9 @@ public class Ghost extends Character  {
          }
     }
 
+    /*
+    Resets x and y velocities to what they are when the background is still
+     */
     public void reset(int direction) {
         if (direction == 4) {
             yVelocity = yVelocity + background.getSpeed();
@@ -100,6 +119,9 @@ public class Ghost extends Character  {
         }
     }
 
+    /*
+    update method: moves the ghost, decides what image to display, changes the ghosts direction when it hits edge of background
+     */
     public void update(long gameTime) {
         if (gameTime > frameTicker + framePeriod) {
             int direction = background.getDirection();

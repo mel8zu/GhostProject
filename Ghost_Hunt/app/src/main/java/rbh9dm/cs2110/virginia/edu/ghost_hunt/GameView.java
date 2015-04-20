@@ -5,9 +5,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -29,6 +33,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private long lastShot;
     private int score;
     private Paint paint;
+    private int screenWidth;
+    private int screenHeight;
     /*
     Constructor: where the stuff that appears on screen is declared
      */
@@ -50,6 +56,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextSize(60);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        screenWidth = size.x;
+        screenHeight = size.y;
 
         thread = new GameThread(getHolder(), this);
 
@@ -162,6 +174,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
     /*
     Method that calls each thing's draw method so as to display each thing on the screen
+    Only draws ghosts when they are on the screen
      */
     @Override
     public void draw(Canvas canvas) {
@@ -176,7 +189,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             b.draw(canvas);
         }
         for(Ghost g : ghostList) {
-            g.draw(canvas);
+            if (g.getX()<=screenWidth || g.getY()<=screenHeight || g.getX() >= -g.getSpriteWidth() || g.getY() >=-g.getSpriteHeight())
+                g.draw(canvas);
         }
         health.draw(canvas);
         canvas.drawText(("00000000"+score).substring((""+score).length()),750, 50, paint);
