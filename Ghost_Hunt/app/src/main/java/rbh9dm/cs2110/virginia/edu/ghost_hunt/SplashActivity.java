@@ -16,7 +16,7 @@ import android.view.WindowManager;
  */
 public class SplashActivity extends Activity {
     private static String TAG = SplashActivity.class.getName(); // Used to report an error in run()
-    private static long SLEEP_TIME = 8; // Set the duration of the splash screen
+    private static long SLEEP_TIME = 2; // Set the duration of the splash screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

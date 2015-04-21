@@ -12,12 +12,16 @@ public class Background extends Moveable {
 
     private int speed;
     private int direction;
+    private boolean isOnScreen;
 
     public Background(Bitmap bitmap, int xCoord, int yCoord,int speed) {
         super(bitmap, xCoord, yCoord);
         this.speed = speed;
         this.direction = 0;
+        isOnScreen = true;
     }
+
+
 
     public void setSpeed(int speed) {
         this.speed = speed;
@@ -35,8 +39,12 @@ public class Background extends Moveable {
         return this.direction;
     }
 
+    public boolean checkOnScreen(int xCoord, int yCoord) {
+        return true;
+    }
+
     public void update () {
-        //Log.i("Hi","direction is:"+direction);
+        Log.i("Hi","direction is:"+direction);
         if (direction == 1)
             this.setYCoord(this.getYCoord() + speed);
         else if (direction == 2)

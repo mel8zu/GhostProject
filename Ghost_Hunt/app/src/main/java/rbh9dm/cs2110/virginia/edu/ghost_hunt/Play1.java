@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Student User on 3/26/2015.
  */
-public class Play extends ActionBarActivity {
+public class Play1 extends ActionBarActivity {
 
     /*private MainCharacter player;
     private ArrayList<Integer> list;*/
@@ -27,7 +27,7 @@ public class Play extends ActionBarActivity {
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         // making it full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(new GameView(this));
+        setContentView(new GameView(this,1));
     }
 
     @Override

@@ -80,4 +80,8 @@ public class Score extends ActionBarActivity {
         Log.i("Score","Here is score 1: "+scoreList.get(0).getScore());
 
     }
+
+    public void update() {
+
+    }
 }

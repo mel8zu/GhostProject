@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="#ff8fc3ff">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:text="Select a Level"
+        android:layout_weight="0.2"
+        android:elegantTextHeight="false"
+        android:textColor="#ff0016ff"
+        android:editable="false"
+        android:textSize="50sp" />
+
+    <Button
+        android:layout_width="178dp"
+        android:layout_height="117dp"
+        android:text="Forest"
+        android:id="@+id/L1"
+        android:clickable="false"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:text="Winter"
+        android:id="@+id/L2"
+        android:clickable="false"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.24" />
+
+    <Button
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:text="Desert"
+        android:id="@+id/L3"
+        android:clickable="false"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.24" />
+
+</LinearLayout>
