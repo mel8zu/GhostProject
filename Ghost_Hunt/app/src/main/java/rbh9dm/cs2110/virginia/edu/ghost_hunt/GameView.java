@@ -77,10 +77,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         screenWidth = size.x;
         screenHeight = size.y;
 
-        up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u), screenWidth/2, screenHeight - 300);
+        up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u), screenWidth/2, screenHeight - (screenHeight/3));
         left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l), screenWidth/2 - (screenWidth/4), screenHeight - 200);
         right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r), screenWidth/2 + ((screenWidth)/4), screenHeight - 200);
-        down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d), screenWidth/2, screenHeight - 100);
+        down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d), screenWidth/2, screenHeight - (screenHeight/6));
         health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10, character.getHealthLevel());
 
 
