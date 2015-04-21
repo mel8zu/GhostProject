@@ -62,20 +62,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         else if (level == 2) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.winter2), 0, 0, 5);
         else  background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.forest), 0, 0, 5);
         character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14,6,2,2,2,2);
-<<<<<<< HEAD
-        up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u), screenWidth/2, screenHeight - 300);
-        left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l), screenWidth/2 - (screenWidth/4), screenHeight - 200);
-        right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r), screenWidth/2 + ((screenWidth)/4), screenHeight - 200);
-        down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d), screenWidth/2, screenHeight - 100);
-        health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10, character.getHealthLevel());
-=======
-        up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 400, 800);
-        left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 200, 1000);
-        right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 600, 1000);
-        down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 400, 1200);
-        health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10);
 
->>>>>>> origin/project
         bulletList = new ArrayList<Bullet>();
         ghostList = new ArrayList<Ghost>();
         initCreateGhosts();
@@ -89,6 +76,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         display.getSize(size);
         screenWidth = size.x;
         screenHeight = size.y;
+
+        up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u), screenWidth/2, screenHeight - 300);
+        left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l), screenWidth/2 - (screenWidth/4), screenHeight - 200);
+        right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r), screenWidth/2 + ((screenWidth)/4), screenHeight - 200);
+        down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d), screenWidth/2, screenHeight - 100);
+        health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10, character.getHealthLevel());
+
 
         thread = new GameThread(getHolder(), this);
 
@@ -213,9 +207,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for(Ghost g : ghostList) {
             g.update(System.currentTimeMillis());
         }
-<<<<<<< HEAD
 
-=======
         score = score + (-prevTime + System.currentTimeMillis());
         displayScore = (int) (score/1000) * 100;
         prevTime = System.currentTimeMillis();
@@ -273,7 +265,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
         return false;
->>>>>>> origin/project
+
     }
     /*
     Method that calls each thing's draw method so as to display each thing on the screen
