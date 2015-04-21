@@ -193,4 +193,10 @@ public class Character {
         canvas.drawBitmap(bitmap, sourceRect, destRect, null);
     }
 
+    public Rect getHitbox() {
+        Rect destRect = new Rect(getX(), getY(), getX() + spriteWidth, getY() + spriteHeight);
+        return destRect;
+    }
+
+
 }

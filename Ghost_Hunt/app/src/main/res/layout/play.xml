@@ -10,7 +10,8 @@
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="350dp">
+        android:layout_marginTop="350dp"
+        android:id="@+id/linearLayout">
         <Button
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -41,6 +42,7 @@
             android:id="@+id/downButton"
             android:text="down">
         </Button>
+
     </LinearLayout>
     <ImageView
         android:layout_width="wrap_content"
@@ -48,4 +50,27 @@
         android:id="@+id/androidIcon"
         android:src="@drawable/androidguy"
    />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/androidIcon"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:id="@+id/scoreText"
+            android:inputType="text"
+            android:editable="false"
+            android:hint="edit_message"
+            android:layout_weight="0.36" />
+    </LinearLayout>
+
 </RelativeLayout>

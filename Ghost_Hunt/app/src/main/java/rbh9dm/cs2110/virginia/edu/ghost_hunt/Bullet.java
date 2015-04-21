@@ -17,6 +17,7 @@ public class Bullet extends Moveable {
     private double yVelocity; //velocity in the y direction
     private double distance; //distance the bullet has travelled
 
+
     /*
     Constructor
      */

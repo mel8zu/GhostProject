@@ -20,8 +20,10 @@ public class Moveable {
         this.bitmap = bitmap;
         this.xCoord = xCoord;
         this.yCoord = yCoord;
+        canMove = true;
 
     }
+
 
     public int getXCoord() {
         return xCoord;

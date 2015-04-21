@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Calling onClick() on play button");
-                Intent intent=new Intent(context, Play.class);
+                Intent intent=new Intent(context, LevelView.class);
                 startActivity(intent);
             }
         });
