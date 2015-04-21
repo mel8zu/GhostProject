@@ -23,6 +23,7 @@ public class Character {
     protected int numLeft;
     protected int numRight;
     protected int numDown;
+    protected int healthLevel;
 
     /*
     Constructor
@@ -43,6 +44,8 @@ public class Character {
         this.numLeft = numLeft;
         this.numRight = numRight;
         this.numDown = numDown;
+        this.healthLevel = 100;
+
     }
 
     /*Getters and setters*/
@@ -125,6 +128,15 @@ public class Character {
     public void setSpriteHeight(int spriteHeight) {
         this.spriteHeight = spriteHeight;
     }
+
+    public int getHealthLevel() {
+        return healthLevel;
+    }
+
+    public void setHealthLevel(int healthLevel) {
+        this.healthLevel = healthLevel;
+
+    }
     /*
     Updates character once per frame period
      Takes a direction (0=still,1=up,2=left,3=right,4=down) to determine which sprite to print
@@ -173,6 +185,9 @@ public class Character {
     sourceRect tells which which image to cut out of the sprite sheet
     destRect tells where to print the image on the screen
      */
+
+
+
     public void draw(Canvas canvas) {
         Rect destRect = new Rect(getX(), getY(), getX() + spriteWidth, getY() + spriteHeight);
         canvas.drawBitmap(bitmap, sourceRect, destRect, null);

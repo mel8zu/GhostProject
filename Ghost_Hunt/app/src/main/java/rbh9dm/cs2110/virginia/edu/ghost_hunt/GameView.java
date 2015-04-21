@@ -44,11 +44,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.pug), 0, 0, 5);
         character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14,6,2,2,2,2);
-        up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 400, 800);
-        left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 200, 1000);
-        right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 600, 1000);
-        down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.button), 400, 1200);
-        health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10);
+        up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u), 400, 950);
+        left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l), 200, 1150);
+        right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r), 600, 1150);
+        down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d), 400, 1350);
+        health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10, character.getHealthLevel());
         bulletList = new ArrayList<Bullet>();
         ghostList = new ArrayList<Ghost>();
         initCreateGhosts();
@@ -77,6 +77,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.setRunning(true);
         thread.start();
     }
+
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
@@ -171,6 +172,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for(Ghost g : ghostList) {
             g.update(System.currentTimeMillis());
         }
+
     }
     /*
     Method that calls each thing's draw method so as to display each thing on the screen

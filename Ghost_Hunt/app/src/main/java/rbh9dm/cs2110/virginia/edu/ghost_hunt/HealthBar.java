@@ -15,14 +15,16 @@ public class HealthBar {
     private Bitmap death;
     private Rect sourceRect;
     private int damage;
+    private int healthLevel;
 
-    public HealthBar(Bitmap health, Bitmap death, int x, int y) {
+    public HealthBar(Bitmap health, Bitmap death, int x, int y, int healthLevel) {
         this.x = x;
         this.y = y;
         this.health = health;
         this.death = death;
         this.sourceRect = new Rect(0,0,x+health.getWidth(),y+health.getHeight());
         this.damage = 0;
+        this.healthLevel = healthLevel;
     }
 
     public int getX() {
@@ -76,6 +78,7 @@ public class HealthBar {
         else
             this.sourceRect.set(x, y, 1 ,y+health.getHeight());
     }
+
 
     public void addDamage(int dam) {
         setDamage(getDamage() + dam);
