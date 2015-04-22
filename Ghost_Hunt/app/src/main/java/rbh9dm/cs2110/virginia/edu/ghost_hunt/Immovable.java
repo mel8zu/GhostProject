@@ -1,6 +1,7 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.support.v4.graphics.BitmapCompat;
 
 /**
@@ -9,6 +10,8 @@ import android.support.v4.graphics.BitmapCompat;
 public class Immovable {
     private int xCoord;
     private int yCoord;
+    private int centerX;
+    private int centerY;
     private int width;
     private int height;
     private Bitmap bitmap;
@@ -20,6 +23,8 @@ public class Immovable {
         this.yCoord = yCoord;
         this.width = width;
         this.height = height;
+        centerX = xCoord + width/2;
+        centerY = yCoord + height/2;
         canMove = false;
 
     }
@@ -38,6 +43,7 @@ public class Immovable {
 
     public void setxCoord(int xCoord) {
         this.xCoord = xCoord;
+        this.centerX = xCoord + width/2;
     }
 
     public int getyCoord() {
@@ -46,6 +52,7 @@ public class Immovable {
 
     public void setyCoord(int yCoord) {
         this.yCoord = yCoord;
+        this.centerY = yCoord + height/2;
     }
 
     public int getWidth() {
@@ -54,6 +61,7 @@ public class Immovable {
 
     public void setWidth(int width) {
         this.width = width;
+        this.centerX = xCoord + width/2;
     }
 
     public int getHeight() {
@@ -62,6 +70,7 @@ public class Immovable {
 
     public void setHeight(int height) {
         this.height = height;
+        this.centerY = yCoord + height/2;
     }
 
     public Bitmap getBitmap() {
@@ -72,11 +81,23 @@ public class Immovable {
         this.bitmap = bitmap;
     }
 
+    public int getCenterX() {
+        return centerX;
+    }
+
+    public int getCenterY() {
+        return centerY;
+    }
+
     public boolean isCanMove() {
         return canMove;
     }
 
     public void setCanMove(boolean canMove) {
         this.canMove = canMove;
+    }
+
+    public void draw(Canvas canvas) {
+        canvas.drawBitmap(bitmap, xCoord, yCoord, null);
     }
 }
