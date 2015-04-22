@@ -47,6 +47,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Play play;
     private boolean setScore;
     private ArrayList<Coin> coinList;
+    private Sounds sound;
 
     /*
     Constructor: where the stuff that appears on screen is declared
@@ -55,6 +56,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         this.level = level;
         getHolder().addCallback(this);
+
+        sound = new Sounds(context);
 
         score = 0;
         displayScore = 0;
@@ -165,6 +168,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             background.setDirection(0);
                             if (System.currentTimeMillis() > lastShot + 1000) {
                                 bulletList.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), character, 10, event.getX(), event.getY()));
+                                sound.playGun();
                                 lastShot = System.currentTimeMillis();
                             }
                         }
@@ -217,9 +221,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 b.setxVelocity(b.getxVelocity() + background.getSpeed());
             }
             else if (dir == 4) {
-                b.setyVelocity(b.getyVelocity() + background.getSpeed());
-                b.update();
                 b.setyVelocity(b.getyVelocity() - background.getSpeed());
+                b.update();
+                b.setyVelocity(b.getyVelocity() + background.getSpeed());
             }
             if(b.getDistance()>550)
                 iterator.remove();
@@ -247,6 +251,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             double distanceY = (character.getY() + character.getSpriteHeight()/2) - c.getCenterY();
             double distance = Math.sqrt(Math.pow(distanceX,2)+Math.pow(distanceY,2));
             if (distance < 0.75*character.getSpriteWidth()) {
+                sound.playCash();
                 iterate.remove();
                 score+=2500;
             }
@@ -325,6 +330,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     coinList.add(new Coin(coinMap, coinX, coinY, 3, 8, System.currentTimeMillis(),background));
                     ghostList.remove(i);
                     bulletList.remove(j);
+                    sound.playScream();
                     score += 2500;
                     killedGhosts++;
                     return true;
