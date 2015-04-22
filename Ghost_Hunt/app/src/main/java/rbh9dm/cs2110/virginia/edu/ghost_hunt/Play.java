@@ -11,6 +11,9 @@ import java.util.Collections;
  * Created by Student User on 4/21/2015.
  */
 public abstract class Play extends Activity {
+
+    protected GameView gameView;
+
     protected void updateHighScore(String score) {
         DataBaseHandler db = new DataBaseHandler(this);
         Log.i("***********", "****************** scores in db: " + db.getHighScoreCount());
@@ -37,6 +40,25 @@ public abstract class Play extends Activity {
         }
         Intent intent = new Intent(Play.this, MainActivity.class);
         Play.this.startActivity(intent);
-        onStop();
     }
+
+    @Override
+    public void onBackPressed() {
+        gameView.shutDownThread();
+        Intent intent=new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void onPause() {
+        super.onPause();
+        gameView.shutDownThread();
+    }
+
+    public void onResume() {
+        super.onResume();
+        if (gameView != null) {
+            gameView.restartThread();
+        }
+    };
+
 }
