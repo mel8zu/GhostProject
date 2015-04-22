@@ -1,6 +1,7 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -34,5 +35,8 @@ public abstract class Play extends Activity {
         for(int i = 0; i<10; i++) {
             db.addHighScore(new HighScore(scoreList.get(i).getScore()));
         }
+        Intent intent = new Intent(Play.this, MainActivity.class);
+        Play.this.startActivity(intent);
+        onStop();
     }
 }

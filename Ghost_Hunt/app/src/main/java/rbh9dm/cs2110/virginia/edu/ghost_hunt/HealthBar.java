@@ -3,6 +3,7 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 /**
  * Created by Student User on 4/12/2015.
@@ -22,7 +23,7 @@ public class HealthBar {
         this.y = y;
         this.health = health;
         this.death = death;
-        this.sourceRect = new Rect(0,0,x+health.getWidth(),y+health.getHeight());
+        this.sourceRect = new Rect(0,0,health.getWidth(),health.getHeight());
         this.damage = 0;
         this.healthLevel = healthLevel;
     }
@@ -71,17 +72,20 @@ public class HealthBar {
         return damage;
     }
 
-    public void setDamage(int damage) {
+    public boolean setDamage(int damage) {
         this.damage = damage;
-        if (damage < health.getWidth())
-            this.sourceRect.set(x, y,(x+health.getWidth())-damage,y+health.getHeight());
-        else
-            this.sourceRect.set(x, y, 1 ,y+health.getHeight());
+        if (damage < health.getWidth()) {
+            this.sourceRect.set(0, 0, health.getWidth() - damage, health.getHeight());
+            return false;
+        }
+        else {
+            this.sourceRect.set(0, 0, 1, health.getHeight());
+            return true;
+        }
     }
 
-
-    public void addDamage(int dam) {
-        setDamage(getDamage() + dam);
+    public boolean addDamage(int dam) {
+        return setDamage(getDamage() + dam);
     }
 
     public void subtractDamage(int dam) {
@@ -94,7 +98,7 @@ public class HealthBar {
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(death, x, y, null);
-        Rect destRect = new Rect(x, y, x+health.getWidth(),y+health.getHeight());
+        Rect destRect = new Rect(x, y, x+sourceRect.right,y+health.getHeight());
         canvas.drawBitmap(health, sourceRect, destRect, null);
     }
 

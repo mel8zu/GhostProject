@@ -1,6 +1,7 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -40,21 +41,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint paint;
     private int screenWidth;
     private int screenHeight;
-    private Context context;
     private boolean gameOver;
-    private boolean scoreChanged;
     private int level;
-    private int count;
     private Play play;
+    private boolean setScore;
 
     /*
     Constructor: where the stuff that appears on screen is declared
      */
     public GameView(Context context, int level) {
         super(context);
-        this.context = context;
         this.level = level;
-        count = 0;
         getHolder().addCallback(this);
 
         score = 0;
@@ -92,7 +89,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10, character.getHealthLevel());
 
         gameOver = false;
-        scoreChanged = false;
+        setScore = false;
         play = (Play) context;
 
         thread = new GameThread(getHolder(), this);
@@ -124,7 +121,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
     public void initCreateGhosts() {
-        while (count < 6) {
+        while (ghostList.size() < 6) {
             Random rand = new Random();
             int x = rand.nextInt(2000);
             int y = rand.nextInt(2000);
@@ -133,10 +130,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 y = rand.nextInt(2000);
             }
             int speed = rand.nextInt(5) + 3;
-            double angle = rand.nextDouble();
+            double angle = rand.nextDouble()*6;
             Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 3, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
-            count+=1;
         }
     }
     /*
@@ -183,9 +179,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     Where everything is updated. Called once per run through the game loop
      */
     public void update() {
+        if(gameOver && !setScore) {
+            thread.setRunning(false);
+            play.updateHighScore(("0000000000"+displayScore).substring((""+displayScore).length()));
+        }
         background.update();
         character.update(System.currentTimeMillis(),background.getDirection());
-                Iterator<Bullet> iterator = bulletList.iterator();
+        Iterator<Bullet> iterator = bulletList.iterator();
         while(iterator.hasNext()) {
             Bullet b = iterator.next();
             int dir = background.getDirection();
@@ -222,7 +222,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         score = score + (-prevTime + System.currentTimeMillis());
         displayScore = (int) (score/1000) * 100;
         prevTime = System.currentTimeMillis();
-        if ((displayScore / 400)*level  > count) {
+        if ((displayScore / 400)*level  > ghostList.size() && ghostList.size()<=15) {
             Random rand = new Random();
             int width = background.getWidth();
             int bx = background.getXCoord();
@@ -234,28 +234,38 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             double angle = rand.nextDouble();
             Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 3, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
-            count +=1;
         }
-        int index = getClosestGhost();
-        if (Math.sqrt(Math.pow(ghostList.get(index).getX()-character.getX(),2) + Math.pow(ghostList.get(index).getY()-character.getY(),2)) < 225) {
-            health.addDamage(1);
-        }
-        index = getClosestGhost();
-        if (character.getHitbox().intersect(ghostList.get(index).getHitbox())) {
-            System.exit(0);
+        if (ghostList.size() != 0) {
+            int index = getClosestGhost();
+            double distanceX = ghostList.get(index).getX()+0.5*ghostList.get(index).getSpriteWidth()-(character.getX()+0.5*character.getSpriteWidth());
+            double distanceY = ghostList.get(index).getY()+0.5*ghostList.get(index).getSpriteHeight()-(character.getY()+0.5*character.getSpriteHeight());
+            if (Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)) < 0.75*((double)character.getSpriteWidth())) {
+                gameOver = true;
+            }
+            else if (Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)) < 3*character.getSpriteWidth()) {
+                gameOver = health.addDamage(1);
+            }
+            /*index = getClosestGhost();
+            if (Rect.intersects(character.getHitbox(),ghostList.get(index).getHitbox())) {
+                System.exit(0);
+            }*/
         }
         while(ghostDown() == true) {
             ghostDown();
         }
-    }
+     }
 
 
     public int getClosestGhost() {
         int index = 0;
-        for (int i = 0; i < ghostList.size(); i++) {
-            double min = 100000;
-            double dist = Math.sqrt(Math.pow(ghostList.get(i).getX()-character.getX(),2) + Math.pow(ghostList.get(i).getY() - character.getY(), 2));
-            if(dist < min) {
+        double distanceX = ghostList.get(index).getX()+0.5*ghostList.get(index).getSpriteWidth()-(character.getX()+0.5*character.getSpriteWidth());
+        double distanceY = ghostList.get(index).getY()+0.5*ghostList.get(index).getSpriteHeight()-(character.getY()+0.5*character.getSpriteHeight());
+        Double min = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceY, 2));
+        for (int i = 1; i < ghostList.size(); i++) {
+            distanceX = ghostList.get(i).getX()+0.5*ghostList.get(index).getSpriteWidth()-(character.getX()+0.5*character.getSpriteWidth());
+            distanceY = ghostList.get(i).getY()+0.5*ghostList.get(index).getSpriteHeight()-(character.getY()+0.5*character.getSpriteHeight());
+            Double dist = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceY, 2));
+            if(dist.compareTo(min)<0) {
                min = dist;
                index = i;
             }
@@ -268,7 +278,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             for (int j = 0; j < bulletList.size(); j++) {
                 Bullet f = bulletList.get(j);
                 Rect e = new Rect(f.getXCoord(),f.getYCoord(),f.getXCoord() + f.getWidth(), f.getYCoord() + f.getHeight());
-                if (ghostList.get(i).getHitbox().intersect(e)) {
+                if (Rect.intersects(ghostList.get(i).getHitbox(),e)) {
                     ghostList.remove(i);
                     bulletList.remove(j);
                     return true;
@@ -285,10 +295,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawColor(Color.BLACK);
-        if(gameOver && !scoreChanged) {
-            play.updateHighScore(("0000000000"+score).substring((""+score).length()));
-            scoreChanged = true;
-        }
         background.draw(canvas);
         character.draw(canvas);
         up.draw(canvas);

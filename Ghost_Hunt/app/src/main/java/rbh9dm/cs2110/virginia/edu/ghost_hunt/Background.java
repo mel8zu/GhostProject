@@ -44,7 +44,6 @@ public class Background extends Moveable {
     }
 
     public void update () {
-        Log.i("Hi","direction is:"+direction);
         if (direction == 1)
             this.setYCoord(this.getYCoord() + speed);
         else if (direction == 2)
