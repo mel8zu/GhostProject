@@ -86,4 +86,11 @@ public class LevelView extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(this, MainActivity.class);
+        startActivity(intent);
+        startActivity(intent);
+    }
+
 }

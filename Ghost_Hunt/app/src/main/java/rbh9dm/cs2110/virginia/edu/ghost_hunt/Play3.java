@@ -19,8 +19,9 @@ public class Play3 extends Play {
        //getting rid of title
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         // making it full screen
+        gameView = new GameView(this, 3);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(new GameView(this,3));
+        setContentView(gameView);
     }
 
     @Override

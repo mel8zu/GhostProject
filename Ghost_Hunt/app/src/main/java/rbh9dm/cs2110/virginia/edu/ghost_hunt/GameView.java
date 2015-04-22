@@ -311,4 +311,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         health.draw(canvas);
         canvas.drawText(("0000000000"+displayScore).substring((""+displayScore).length()),750, 50, paint);
     }
+
+    public void shutDownThread() {
+        thread.setRunning(false);
+    }
+
+    public void restartThread() {
+        thread.setRunning(true);
+    }
 }

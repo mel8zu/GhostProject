@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity {
     private static final String TAG="MainActivity";
 
     private Button scoresButton;
-    private Button PlayButton;
+    private Button playButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        scoresButton = (Button) findViewById(R.id.play_button);
-        scoresButton.setOnClickListener(new View.OnClickListener() {
+        playButton = (Button) findViewById(R.id.play_button);
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Calling onClick() on play button");
@@ -69,5 +69,13 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
