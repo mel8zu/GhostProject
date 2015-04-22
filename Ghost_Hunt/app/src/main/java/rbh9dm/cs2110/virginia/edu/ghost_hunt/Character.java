@@ -14,7 +14,7 @@ public class Character {
     protected Rect sourceRect; //Rectangle that tells where to cut a sprite from the spritesheet
     protected int frameNr; //Number of sprites in the spritesheet
     protected int currentFrame; //Keeps track of which sprite in a sequence we are currently cutting out
-    protected long frameTicker; //Time of the ;ast update
+    protected long frameTicker; //Time of the last update
     protected int framePeriod; //How long between updates
     protected int spriteWidth; //width of a sprite
     protected int spriteHeight; //height of a sprite

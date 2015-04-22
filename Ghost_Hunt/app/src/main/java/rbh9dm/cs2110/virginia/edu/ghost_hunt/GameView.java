@@ -191,6 +191,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         background.update();
         character.update(System.currentTimeMillis(),background.getDirection());
+        for(Coin c : coinList) {
+            c.update(System.currentTimeMillis());
+        }
         Iterator<Bullet> iterator = bulletList.iterator();
         while(iterator.hasNext()) {
             Bullet b = iterator.next();
@@ -318,8 +321,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if (Rect.intersects(ghostList.get(i).getHitbox(),e)) {
                     int coinX = ghostList.get(i).getX();
                     int coinY = ghostList.get(i).getY();
-                    Bitmap coinMap = BitmapFactory.decodeResource(getResources(), R.drawable.coin);
-                    coinList.add(new Coin(coinMap, coinX, coinY, coinMap.getWidth(), coinMap.getHeight(), System.currentTimeMillis(),background));
+                    Bitmap coinMap = BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold);
+                    coinList.add(new Coin(coinMap, coinX, coinY, 3, 8, System.currentTimeMillis(),background));
                     ghostList.remove(i);
                     bulletList.remove(j);
                     score += 2500;
