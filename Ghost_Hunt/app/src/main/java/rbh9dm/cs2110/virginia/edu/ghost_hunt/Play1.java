@@ -3,20 +3,14 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt; /**
  */
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.Window;
+import android.app.Activity;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
 
-import java.util.ArrayList;
 
 /**
  * Created by Student User on 3/26/2015.
  */
-public class Play1 extends ActionBarActivity {
+public class Play1 extends Play {
 
     /*private MainCharacter player;
     private ArrayList<Integer> list;*/

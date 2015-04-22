@@ -3,7 +3,7 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 /**
  * Created by Student User on 3/28/2015.
  */
-public class HighScore {
+public class HighScore implements Comparable<HighScore> {
 
     private String score;
     private int id;
@@ -37,6 +37,10 @@ public class HighScore {
     // setting id
     public void setID(int id){
         this.id = id;
+    }
+
+    public int compareTo(HighScore h) {
+        return score.compareTo(h.getScore());
     }
 
     public String toString() {

@@ -1,6 +1,7 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt; /**
  * Created by Student User on 3/31/2015.
  */
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.WindowManager;
@@ -8,7 +9,7 @@ import android.view.WindowManager;
 /**
  * Created by Student User on 3/26/2015.
  */
-public class Play3 extends ActionBarActivity {
+public class Play3 extends Play {
 
     /*private MainCharacter player;
     private ArrayList<Integer> list;*/

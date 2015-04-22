@@ -85,8 +85,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
     // Getting All Contacts
-    public List<HighScore> getAllHighScores() {
-        List<HighScore> highScoreList = new ArrayList<HighScore>();
+    public ArrayList<HighScore> getAllHighScores() {
+        ArrayList<HighScore> highScoreList = new ArrayList<HighScore>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_HIGH_SCORES;
 

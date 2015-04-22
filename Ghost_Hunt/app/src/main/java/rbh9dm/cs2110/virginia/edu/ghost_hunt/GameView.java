@@ -1,6 +1,7 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -40,13 +41,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int screenWidth;
     private int screenHeight;
     private Context context;
+    private boolean gameOver;
+    private boolean scoreChanged;
     private int level;
     private int count;
+    private Play play;
+
     /*
     Constructor: where the stuff that appears on screen is declared
      */
-
-
     public GameView(Context context, int level) {
         super(context);
         this.context = context;
@@ -77,12 +80,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         screenWidth = size.x;
         screenHeight = size.y;
 
-        up = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u), screenWidth/2, screenHeight - (screenHeight/3));
-        left = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l), screenWidth/2 - (screenWidth/4), screenHeight - 200);
-        right = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r), screenWidth/2 + ((screenWidth)/4), screenHeight - 200);
-        down = new DirectionButton(BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d), screenWidth/2, screenHeight - (screenHeight/6));
+        Bitmap upMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u);
+        Bitmap leftMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l);
+        Bitmap rightMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r);
+        Bitmap downMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d);
+
+        down = new DirectionButton(downMap , (int) (screenWidth/2 - 0.5*downMap.getWidth()), screenHeight - downMap.getHeight() - 25);
+        up = new DirectionButton(upMap , (int) (screenWidth/2 - 0.5*upMap.getWidth()), down.getY() - downMap.getHeight() - 25);
+        left = new DirectionButton(leftMap , down.getX() - leftMap.getWidth() - 10, screenHeight - leftMap.getHeight() - 25);
+        right = new DirectionButton(rightMap , down.getX() + downMap.getWidth() + 10, screenHeight - rightMap.getHeight() - 25);
         health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10, character.getHealthLevel());
 
+        gameOver = false;
+        scoreChanged = false;
+        play = (Play) context;
 
         thread = new GameThread(getHolder(), this);
 
@@ -274,6 +285,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawColor(Color.BLACK);
+        if(gameOver && !scoreChanged) {
+            play.updateHighScore(("0000000000"+score).substring((""+score).length()));
+            scoreChanged = true;
+        }
         background.draw(canvas);
         character.draw(canvas);
         up.draw(canvas);
@@ -288,6 +303,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 g.draw(canvas);
         }
         health.draw(canvas);
-        canvas.drawText(("00000000"+displayScore).substring((""+displayScore).length()),750, 50, paint);
+        canvas.drawText(("0000000000"+displayScore).substring((""+displayScore).length()),750, 50, paint);
     }
 }
