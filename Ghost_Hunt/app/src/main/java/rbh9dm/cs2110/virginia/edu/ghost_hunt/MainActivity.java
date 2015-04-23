@@ -1,7 +1,11 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.media.MediaPlayer;
+import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +31,13 @@ public class MainActivity extends ActionBarActivity {
 
         final Context context=this;
 
+        /*MediaPlayer mp = MediaPlayer.create(this, R.raw.ghostbusters);
+        mp.seekTo(10000);
+        //mp.prepareAsync();
+        mp.setLooping(true);
+        mp.setVolume((float)0.5, (float)0.5);
+        mp.start();*/
+
         scoresButton = (Button) findViewById(R.id.score_button);
         scoresButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +58,6 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

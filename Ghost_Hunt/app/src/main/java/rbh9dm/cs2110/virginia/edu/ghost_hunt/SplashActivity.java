@@ -3,6 +3,7 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 /**
  * Created by Student User on 3/31/2015.
  */
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.content.Intent;

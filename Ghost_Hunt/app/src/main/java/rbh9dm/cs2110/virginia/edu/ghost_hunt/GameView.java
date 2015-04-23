@@ -191,6 +191,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(gameOver && !setScore) {
             thread.setRunning(false);
             setScore = true;
+            sound.release();
             play.updateHighScore(("0000000000"+displayScore).substring((""+displayScore).length()));
         }
         background.update();

@@ -1,7 +1,9 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 
 import java.util.Random;
 
@@ -9,38 +11,40 @@ import java.util.Random;
  * Created by Student User on 4/22/2015.
  */
 public class Sounds {
-    private MediaPlayer gun;
-    private MediaPlayer scream1;
-    private MediaPlayer scream2;
-    private MediaPlayer scream3;
-    private MediaPlayer coinCollect;
+
+    private SoundPool soundPool;
     private Random rand;
 
     Sounds(Context context) {
         rand = new Random();
-        gun = MediaPlayer.create(context, R.raw.shot);
-        scream1 = MediaPlayer.create(context, R.raw.scream1);
-        scream2 = MediaPlayer.create(context, R.raw.scream2);
-        scream3 = MediaPlayer.create(context, R.raw.scream3);
-        coinCollect = MediaPlayer.create(context, R.raw.cash);
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        soundPool.load(context, R.raw.shot, 1);
+        soundPool.load(context, R.raw.scream1, 2);
+        soundPool.load(context, R.raw.scream2, 3);
+        soundPool.load(context, R.raw.scream3, 4);
+        soundPool.load(context, R.raw.cash, 5);
     }
 
     public void playGun() {
-        gun.start();
+        soundPool.play(1,1,1,0,0,1);
     }
 
     public void playScream() {
-        int x = rand.nextInt(3) + 1;
+        int x = rand.nextInt(3) + 2;
         if (x == 1)
-            scream1.start();
+            soundPool.play(2,1,1,0,0,1);
         else if (x==2)
-            scream2.start();
+            soundPool.play(3,1,1,0,0,1);
         else
-            scream3.start();
+            soundPool.play(4,1,1,0,0,1);
     }
 
     public void playCash() {
-        coinCollect.start();
+        soundPool.play(5,1,1,0,0,1);
+    }
+
+    public void release() {
+        soundPool.release();
     }
 
 }

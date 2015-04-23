@@ -2,7 +2,10 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +16,15 @@ import java.util.Collections;
 public abstract class Play extends Activity {
 
     protected GameView gameView;
+    protected MediaPlayer mp;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mp = MediaPlayer.create(this, R.raw.ghostbusters);
+        mp.setLooping(true);
+        mp.setVolume(.3F,.3F);
+        mp.start();
+    }
 
     protected void updateHighScore(String score) {
         DataBaseHandler db = new DataBaseHandler(this);
@@ -45,17 +57,20 @@ public abstract class Play extends Activity {
     @Override
     public void onBackPressed() {
         gameView.shutDownThread();
+        mp.stop();
         Intent intent=new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     public void onPause() {
         super.onPause();
-        gameView.shutDownThread();
+         gameView.shutDownThread();
+        mp.stop();
     }
 
     public void onResume() {
         super.onResume();
+        mp.start();
         if (gameView != null) {
             gameView.restartThread();
         }
