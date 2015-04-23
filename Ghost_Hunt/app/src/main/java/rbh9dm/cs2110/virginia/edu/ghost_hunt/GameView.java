@@ -52,6 +52,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap ghostBit;
     private Bitmap coinBit;
     private Bitmap bulletBit;
+    private int numCoins;
 
     /*
     Constructor: where the stuff that appears on screen is declared
@@ -68,6 +69,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         displayScore = 0;
         prevTime = System.currentTimeMillis();
         killedGhosts = 0;
+        numCoins = 0;
 
         paint = new Paint();
         paint.setColor(Color.WHITE);
@@ -263,6 +265,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (distance < 0.75*character.getSpriteWidth()) {
                 sound.playCash();
                 iterate.remove();
+                numCoins++;
                 score+=2500;
             }
             else if (c.howLongOnScreen(System.currentTimeMillis()) > 8000) {
@@ -374,7 +377,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 g.draw(canvas);
         }
         health.draw(canvas);
-        canvas.drawText(("0000000000"+displayScore).substring((""+displayScore).length()),750, 50, paint);
+        canvas.drawText(("0000000000"+displayScore).substring((""+displayScore).length()),health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize() , paint);
+        canvas.drawText(""+numCoins,health.getX(), health.getY() + health.getHealth().getHeight() + 2*paint.getTextSize() , paint);
+
     }
 
     public void shutDownThread() {
