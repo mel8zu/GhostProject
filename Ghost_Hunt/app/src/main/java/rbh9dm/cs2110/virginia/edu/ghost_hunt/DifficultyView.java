@@ -2,8 +2,8 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,61 +13,54 @@ import android.widget.Button;
 import static rbh9dm.cs2110.virginia.edu.ghost_hunt.R.menu.menu_level;
 
 /**
- * Created by Pylo on 4/11/15.
+ * Created by Student User on 4/23/2015.
  */
-public class LevelView extends ActionBarActivity {
+public class DifficultyView extends ActionBarActivity {
 
-    private static final String TAG="Level Selection";
+    private static final String TAG = "Difficulty Selection";
 
-    private Button levelButton;
+    private Button difficultyButton;
 
     @Override
     protected void onCreate(Bundle savedInstancesState) {
         super.onCreate(savedInstancesState);
-        Log.i(TAG, "Calling Level 1 button");
+        Log.i(TAG, "Calling easy button");
 
-        setContentView(R.layout.level_select);
+        setContentView(R.layout.difficulty_view);
 
-        final Context context=this;
+        final Context context = this;
 
-        Intent i = getIntent();
-        Bundle bundle = i.getExtras();
-        Log.i("hi","here is the bundle!! : " + bundle);
-        final int hardness = (Integer) bundle.get("hardness");
-
-        Log.i("hi", "here is the hardness: " + hardness);
-
-        levelButton = (Button) findViewById(R.id.L1);
-        levelButton.setOnClickListener(new View.OnClickListener() {
+        difficultyButton = (Button) findViewById(R.id.d1);
+        difficultyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Calling onClick() on Forrest button");
-                Intent intent = new Intent(context, Play1.class);
-                intent.putExtra("hardness",hardness);
+                Log.i(TAG, "Calling onClick() on easy button");
+                Intent intent = new Intent(context, LevelView.class);
+                intent.putExtra("hardness",1);
                 startActivity(intent);
             }
         });
 
-        Log.i(TAG, "Calling Level 2 button");
-        levelButton = (Button) findViewById(R.id.L2);
-        levelButton.setOnClickListener(new View.OnClickListener() {
+        Log.i(TAG, "Calling medium button");
+        difficultyButton = (Button) findViewById(R.id.d2);
+        difficultyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Calling onClick() on Forrest button");
-                Intent intent=new Intent(context, Play2.class);
-                intent.putExtra("hardness",hardness);
+                Log.i(TAG, "Calling onClick() on medium button");
+                Intent intent = new Intent(context, LevelView.class);
+                intent.putExtra("hardness",2);
                 startActivity(intent);
             }
         });
 
-        Log.i(TAG, "Calling Level 3 button");
-        levelButton = (Button) findViewById(R.id.L3);
-        levelButton.setOnClickListener(new View.OnClickListener() {
+        Log.i(TAG, "Calling hard button");
+        difficultyButton = (Button) findViewById(R.id.d3);
+        difficultyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Calling onClick() on Forrest button");
-                Intent intent=new Intent(context, Play3.class);
-                intent.putExtra("hardness",hardness);
+                Log.i(TAG, "Calling onClick() on hard button");
+                Intent intent = new Intent(context, LevelView.class);
+                intent.putExtra("hardness",3);
                 startActivity(intent);
             }
         });
@@ -98,9 +91,8 @@ public class LevelView extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         startActivity(intent);
     }
-
 }

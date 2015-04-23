@@ -43,17 +43,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int screenWidth;
     private int screenHeight;
     private boolean gameOver;
+    private int difficulty;
     private int level;
     private Play play;
     private boolean setScore;
     private ArrayList<Coin> coinList;
     private Sounds sound;
+    private Bitmap ghostBit;
+    private Bitmap coinBit;
+    private Bitmap bulletBit;
 
     /*
     Constructor: where the stuff that appears on screen is declared
      */
-    public GameView(Context context, int level) {
+    public GameView(Context context, int level, int difficulty) {
         super(context);
+        this.difficulty = difficulty;
         this.level = level;
         getHolder().addCallback(this);
 
@@ -64,6 +69,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         prevTime = System.currentTimeMillis();
         killedGhosts = 0;
 
+        ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
+        coinBit = BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold);
+        bulletBit = BitmapFactory.decodeResource(getResources(), R.drawable.bullet);
         character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14,6,2,2,2,2);
         if (level == 3) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.desert3), 0, 0, 5);
         else if (level == 2) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.winter2), 0, 0, 5);
@@ -139,7 +147,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
             int speed = rand.nextInt(5) + 3;
             double angle = rand.nextDouble()*6;
-            Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 3, 9, 1, 2, 2, 2, 2, speed, angle, background);
+            Ghost ghost1 = new Ghost(ghostBit, x, y, 3, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
         }
     }
@@ -167,7 +175,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         } else {
                             background.setDirection(0);
                             if (System.currentTimeMillis() > lastShot + 1000) {
-                                bulletList.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), character, 10, event.getX(), event.getY()));
+                                bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY()));
                                 sound.playGun();
                                 lastShot = System.currentTimeMillis();
                             }
@@ -281,7 +289,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void createGhostMap() {
-        if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=10) {
+        if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=(10 + 3 * difficulty)) {
             Random rand = new Random();
             int width = background.getWidth();
             int bx = background.getXCoord();
@@ -293,9 +301,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 x = rand.nextInt(width) + bx;
                 y = rand.nextInt(height) + by;
             }
-            int speed = rand.nextInt(5) + 3;
+            int speed = rand.nextInt(5) + 2*difficulty;
             double angle = rand.nextDouble()*6;
-            Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 3, 9, 1, 2, 2, 2, 2, speed, angle, background);
+            Ghost ghost1 = new Ghost(ghostBit, x, y, 3, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
         }
     }
@@ -308,7 +316,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)) < 0.75 * ((double) character.getSpriteWidth())) {
                 gameOver = true;
             } else if (Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)) < 2 * character.getSpriteWidth()) {
-                gameOver = health.addDamage(1);
+                gameOver = health.addDamage(difficulty);
             }
         }
     }
@@ -327,8 +335,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if (Rect.intersects(ghostList.get(i).getHitbox(),e)) {
                     int coinX = ghostList.get(i).getX();
                     int coinY = ghostList.get(i).getY();
-                    Bitmap coinMap = BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold);
-                    coinList.add(new Coin(coinMap, coinX, coinY, 3, 8, System.currentTimeMillis(),background));
+                    coinList.add(new Coin(coinBit, coinX, coinY, 3, 8, System.currentTimeMillis(),background));
                     ghostList.remove(i);
                     bulletList.remove(j);
                     sound.playScream();

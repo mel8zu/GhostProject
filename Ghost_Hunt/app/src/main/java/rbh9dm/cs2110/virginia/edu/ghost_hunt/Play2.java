@@ -2,8 +2,10 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt; /**
  * Created by Student User on 3/31/2015.
  */
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.WindowManager;
 
 /**
@@ -19,7 +21,11 @@ public class Play2 extends Play {
        //getting rid of title
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         // making it full screen
-        gameView = new GameView(this, 2);
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+        Log.i("hi", "here is the bundle!! : " + bundle);
+        final int hardness = (Integer) bundle.get("hardness");
+        gameView = new GameView(this, 2, hardness);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(gameView);
     }

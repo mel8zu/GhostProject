@@ -24,6 +24,10 @@ public abstract class Play extends Activity {
         mp.setLooping(true);
         mp.setVolume(.3F,.3F);
         mp.start();
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+        Log.i("hi","here is the bundle!! : " + bundle);
+        final int hardness = (Integer) bundle.get("hardness");
     }
 
     protected void updateHighScore(String score) {
