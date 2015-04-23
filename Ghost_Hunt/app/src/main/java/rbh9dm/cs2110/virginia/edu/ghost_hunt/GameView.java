@@ -69,20 +69,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         prevTime = System.currentTimeMillis();
         killedGhosts = 0;
 
-        ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
-        coinBit = BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold);
-        bulletBit = BitmapFactory.decodeResource(getResources(), R.drawable.bullet);
-        character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14,6,2,2,2,2);
-        if (level == 3) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.desert3), 0, 0, 5);
-        else if (level == 2) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.winter2), 0, 0, 5);
-        else  background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.forest), 0, 0, 5);
-        character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14,6,2,2,2,2);
-
-        bulletList = new ArrayList<Bullet>();
-        ghostList = new ArrayList<Ghost>();
-        coinList = new ArrayList<Coin>();
-        initCreateGhosts();
-
         paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextSize(60);
@@ -92,6 +78,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         display.getSize(size);
         screenWidth = size.x;
         screenHeight = size.y;
+
+        ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
+        coinBit = BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold);
+        bulletBit = BitmapFactory.decodeResource(getResources(), R.drawable.bullet);
+        Bitmap characterBit = BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter);
+        character = new Character(characterBit, 0, 300, 3, 14,6,2,2,2,2);
+        character.setX(screenWidth/2 - character.getSpriteWidth()/2);
+        if (level == 3) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.desert3), 0, 0, 5);
+        else if (level == 2) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.winter2), 0, 0, 5);
+        else  background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.forest), 0, 0, 5);
+
+        bulletList = new ArrayList<Bullet>();
+        ghostList = new ArrayList<Ghost>();
+        coinList = new ArrayList<Coin>();
+        initCreateGhosts();
 
         Bitmap upMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u);
         Bitmap leftMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l);

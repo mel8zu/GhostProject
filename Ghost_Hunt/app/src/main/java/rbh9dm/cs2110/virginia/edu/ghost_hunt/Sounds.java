@@ -31,12 +31,7 @@ public class Sounds {
 
     public void playScream() {
         int x = rand.nextInt(3) + 2;
-        if (x == 1)
-            soundPool.play(2,1,1,0,0,1);
-        else if (x==2)
-            soundPool.play(3,1,1,0,0,1);
-        else
-            soundPool.play(4,1,1,0,0,1);
+        soundPool.play(x,1,1,0,0,1);
     }
 
     public void playCash() {
