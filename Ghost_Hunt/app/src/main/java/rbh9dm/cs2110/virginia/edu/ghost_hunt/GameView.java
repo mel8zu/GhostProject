@@ -50,12 +50,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean setScore;
     private ArrayList<Coin> coinList;
     private Sounds sound;
-    //private Bitmap ghostBit;
+    private Bitmap ghostBit;
     //private Bitmap coinBit;
     //private Bitmap bulletBit;
     private int numCoins;
     private BuyButton heart;
-    //private Bitmap megaGhostBit;
+    private Bitmap megaGhostBit;
 
     /*
     Constructor: where the stuff that appears on screen is declared
@@ -85,6 +85,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         numCoins = 0;
         Bitmap heartBit = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
         heart = new BuyButton(heartBit,screenWidth - heartBit.getWidth() - 10, screenHeight/2, 1, System.currentTimeMillis());
+        ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
+        megaGhostBit = BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost);
 
         Bitmap characterBit = BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter);
         character = new Character(characterBit, 0, 300, 6, 14,6,2,2,2,2);
@@ -152,16 +154,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void initCreateGhosts() {
         while (ghostList.size() < 4) {
             Random rand = new Random();
-            int x = rand.nextInt(2000);
-            int y = rand.nextInt(2000);
-            if(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 80) {
-                x = rand.nextInt(2000);
-                y = rand.nextInt(2000);
+            int x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
+            int y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
+            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 80) {
+                x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
+                y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
             }
             int speed = rand.nextInt(3) + difficulty * 2 + 2;
             double angle = rand.nextDouble()*6;
             Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
+
+            x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
+            y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
+            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 80) {
+                x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
+                y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
+            }
+            angle = rand.nextDouble() * 6;
 
             MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed-2, angle, background);
             ghostList.add(megaGhost1);
@@ -331,20 +341,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void createGhostMap() {
         if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=(5*difficulty)) {
             Random rand = new Random();
-            int width = background.getWidth();
-            int bx = background.getXCoord();
-            int height = background.getHeight();
-            int by = background.getYCoord();
-            int x = rand.nextInt(width) + bx;
-            int y = rand.nextInt(height) + by;
-            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2))< 300) {
-                x = rand.nextInt(width) + bx;
-                y = rand.nextInt(height) + by;
+            int x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
+            int y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
+            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 80) {
+                x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
+                y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
             }
-            int speed = rand.nextInt(3) + 2*difficulty + 2;
+            int speed = rand.nextInt(3) + difficulty * 2 + 2;
             double angle = rand.nextDouble()*6;
             Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
+
+            x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
+            y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
+            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 80) {
+                x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
+                y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
+            }
+            angle = rand.nextDouble() * 6;
 
             MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed-2, angle, background);
             ghostList.add(megaGhost1);
@@ -397,6 +411,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         } else {
                             bulletList.remove(j);
                             ((MegaGhost) ghostList.get(i)).setGhostDamage(1);
+                            sound.playUgh();
                         }
                     } else {
                         int coinX = ghostList.get(i).getX();
