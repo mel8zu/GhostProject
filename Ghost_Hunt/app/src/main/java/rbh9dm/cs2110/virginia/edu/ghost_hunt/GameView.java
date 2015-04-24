@@ -228,6 +228,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         background.update();
         character.update(System.currentTimeMillis(),background.getDirection());
+        walkOffScreen();
         for(Coin c : coinList) {
             c.update(System.currentTimeMillis());
         }
@@ -273,6 +274,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             ghostDown();
         }
 
+    }
+
+    public void walkOffScreen() {
+        int charCenterX = character.getX() + character.getSpriteWidth()/2;
+        int charCenterY = character.getY() + character.getSpriteHeight()/2;
+        if (charCenterX > background.getXCoord() + background.getWidth())
+            shift('r');
+        else if (charCenterX < background.getXCoord())
+            shift('l');
+        if (charCenterY > background.getYCoord() + background.getHeight())
+            shift('b');
+        else if (charCenterY < background.getYCoord())
+            shift('t');
     }
 
     public void manageCoins() {
@@ -402,6 +416,61 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         return false;
 
+    }
+
+    public void shift(char c) {
+        if (c == 't') {
+            int shift = background.getHeight() - 20;
+            background.setYCoord(background.getYCoord() - shift);
+            for(Ghost g : ghostList) {
+                g.setY(g.getY() - shift);
+            }
+            for(Bullet b : bulletList) {
+                b.setYCoord(b.getYCoord() - shift);
+            }
+            for(Coin coin : coinList) {
+                coin.setyCoord(coin.getyCoord() - shift);
+            }
+        }
+        else if (c == 'l') {
+            int shift = background.getWidth() - 20;
+            background.setXCoord(background.getXCoord() - shift);
+            for(Ghost g : ghostList) {
+                g.setX(g.getX() - shift);
+            }
+            for(Bullet b : bulletList) {
+                b.setXCoord(b.getXCoord() - shift);
+            }
+            for(Coin coin : coinList) {
+                coin.setxCoord(coin.getxCoord() - shift);
+            }
+        }
+        else if (c == 'r') {
+            int shift = background.getWidth() - 20;
+            background.setXCoord(background.getXCoord() + shift);
+            for(Ghost g : ghostList) {
+                g.setX(g.getX() + shift);
+            }
+            for(Bullet b : bulletList) {
+                b.setXCoord(b.getXCoord() + shift);
+            }
+            for(Coin coin : coinList) {
+                coin.setyCoord(coin.getyCoord() + shift);
+            }
+        }
+        else if (c == 'b') {
+            int shift = background.getHeight() - 20;
+            background.setYCoord(background.getYCoord() + shift);
+            for(Ghost g : ghostList) {
+                g.setY(g.getY() + shift);
+            }
+            for(Bullet b : bulletList) {
+                b.setYCoord(b.getYCoord() + shift);
+            }
+            for(Coin coin : coinList) {
+                coin.setyCoord(coin.getyCoord() + shift);
+            }
+        }
     }
 
     /*
