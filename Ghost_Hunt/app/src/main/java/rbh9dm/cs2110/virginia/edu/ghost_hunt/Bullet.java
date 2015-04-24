@@ -16,12 +16,14 @@ public class Bullet extends Moveable {
     private double xVelocity; //velocity in the x direction
     private double yVelocity; //velocity in the y direction
     private double distance; //distance the bullet has travelled
+    private double maxDistance;
+    private boolean mega;
 
 
     /*
     Constructor
      */
-    public Bullet(Bitmap bitmap, Character character, double speed, double targetX, double targetY) {
+    public Bullet(Bitmap bitmap, Character character, double speed, double targetX, double targetY, int maxDistance, boolean mega) {
         super(bitmap, 0, 0);
 
         this.character = character;
@@ -38,6 +40,8 @@ public class Bullet extends Moveable {
         double delta = calcDistance(this.deltaX,this.deltaY);
         this.xVelocity = this.speed * (this.deltaX/delta);
         this.yVelocity = this.speed * this.deltaY/delta;
+        this.maxDistance = maxDistance;
+        this.mega = mega;
     }
     /*
     Getters & Setters
@@ -114,9 +118,25 @@ public class Bullet extends Moveable {
         this.distance = distance;
     }
 
+    public double getMaxDistance() {
+        return maxDistance;
+    }
+
+    public void setMaxDistance(double maxDistance) {
+        this.maxDistance = maxDistance;
+    }
+
+    public boolean isMega() {
+        return mega;
+    }
+
+    public void setMega(boolean mega) {
+        this.mega = mega;
+    }
+
     /*
-    Performs pythagorean theorem given change in x and change in y
-     */
+            Performs pythagorean theorem given change in x and change in y
+             */
     public double calcDistance(double delta1, double delta2) {
         return Math.sqrt(Math.pow(delta1,2)+Math.pow(delta2,2));
     }
