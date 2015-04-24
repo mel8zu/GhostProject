@@ -124,6 +124,7 @@ public class Coin {
 
     public void update(long gameTime) {
         if (gameTime > frameTicker + framePeriod) {
+            frameTicker = gameTime;
             if (currentFrame < frameNr-1)
                 currentFrame++;
             else

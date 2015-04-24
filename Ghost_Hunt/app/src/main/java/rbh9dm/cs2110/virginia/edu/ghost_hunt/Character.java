@@ -143,6 +143,7 @@ public class Character {
     */
     public void update(long gameTime, int direction) {
         if (gameTime > frameTicker + framePeriod) {
+            frameTicker = gameTime;
             if (direction == 4) {
                 if (currentFrame > numDown - 1)
                     currentFrame = 0;

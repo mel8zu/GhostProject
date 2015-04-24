@@ -126,8 +126,9 @@ public class MegaGhost extends Ghost {
     update method: moves the ghost, decides what image to display, changes the ghosts direction when it hits edge of background
      */
     public void update(long gameTime) {
+        int direction = background.getDirection();
         if (gameTime > frameTicker + framePeriod) {
-            int direction = background.getDirection();
+            frameTicker = gameTime;
             if (xVelocity <= 0 && Math.abs(xVelocity) >= Math.abs(yVelocity)) {
                 if (currentFrame > numLeft - 1)
                     currentFrame = 0;
@@ -153,6 +154,7 @@ public class MegaGhost extends Ghost {
                 this.sourceRect.right = this.sourceRect.left + spriteWidth;
                 currentFrame++;
             }
+        }
             adjustSpeed(direction);
             x += xVelocity;
             y += yVelocity;
@@ -168,6 +170,6 @@ public class MegaGhost extends Ghost {
             } else if (y + spriteHeight > background.getYCoord() + background.getHeight() - 2) {
                 negYVelocity();
             }
-        }
+
     }
 }

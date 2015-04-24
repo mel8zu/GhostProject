@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -35,7 +34,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private HealthBar health;
     private ArrayList<Bullet> bulletList;
     private ArrayList<Ghost> ghostList;
-    private ArrayList<MegaGhost> megaGhostList;
+    //private ArrayList<MegaGhost> megaGhostList;
     private long lastShot;
     private long score;
     private long prevTime;
@@ -51,10 +50,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean setScore;
     private ArrayList<Coin> coinList;
     private Sounds sound;
-    private Bitmap ghostBit;
-    private Bitmap coinBit;
-    private Bitmap bulletBit;
+    //private Bitmap ghostBit;
+    //private Bitmap coinBit;
+    //private Bitmap bulletBit;
     private int numCoins;
+    private BuyButton heart;
+    //private Bitmap megaGhostBit;
 
     /*
     Constructor: where the stuff that appears on screen is declared
@@ -65,28 +66,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.level = level;
         getHolder().addCallback(this);
 
-        sound = new Sounds(context);
-
-        score = 0;
-        displayScore = 0;
-        prevTime = System.currentTimeMillis();
-        killedGhosts = 0;
-        numCoins = 0;
-
-
-//        character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14,6,2,2,2,2);
-//        if (level == 3) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.desert3), 0, 0, 5);
-//        else if (level == 2) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.winter2), 0, 0, 5);
-//        else  background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.forest), 0, 0, 5);
-//        character = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter), 300, 300, 3, 14,6,2,2,2,2);
-//
-//        bulletList = new ArrayList<Bullet>();
-//        ghostList = new ArrayList<Ghost>();
-//        megaGhostList = new ArrayList<MegaGhost>();
-//        coinList = new ArrayList<Coin>();
-//        initCreateGhosts();
-
-//>>>>>>> Stashed changes
         paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextSize(60);
@@ -97,30 +76,34 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         screenWidth = size.x;
         screenHeight = size.y;
 
-//<<<<<<< Updated upstream
-        ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
-        coinBit = BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold);
-        bulletBit = BitmapFactory.decodeResource(getResources(), R.drawable.bullet);
+        sound = new Sounds(context);
+
+        score = 0;
+        displayScore = 0;
+        prevTime = System.currentTimeMillis();
+        killedGhosts = 0;
+        numCoins = 0;
+        Bitmap heartBit = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
+        heart = new BuyButton(heartBit,screenWidth - heartBit.getWidth() - 10, screenHeight/2, 1, System.currentTimeMillis());
+
         Bitmap characterBit = BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter);
-        character = new Character(characterBit, 0, 300, 3, 14,6,2,2,2,2);
+        character = new Character(characterBit, 0, 300, 6, 14,6,2,2,2,2);
         character.setX(screenWidth/2 - character.getSpriteWidth()/2);
+
         if (level == 3) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.desert3), 0, 0, 5);
         else if (level == 2) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.winter2), 0, 0, 5);
         else  background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.forest), 0, 0, 5);
 
         bulletList = new ArrayList<Bullet>();
         ghostList = new ArrayList<Ghost>();
+        //megaGhostList = new ArrayList<MegaGhost>();
         coinList = new ArrayList<Coin>();
         initCreateGhosts();
-////=======
-//
-//        BitmapFactory.Options o = new BitmapFactory.Options();
-//        o.inTargetDensity = DisplayMetrics.DENSITY_DEFAULT;
-//        Bitmap bmp = BitmapFactory.decodeResource(getResources(),
-//                R.drawable.arrow_l, o);
-//        int buttonW = bmp.getWidth();
-//        int buttonH = bmp.getHeight();
-////>>>>>>> Stashed changes
+
+        bulletList = new ArrayList<Bullet>();
+        ghostList = new ArrayList<Ghost>();
+        coinList = new ArrayList<Coin>();
+        initCreateGhosts();
 
         Bitmap upMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u);
         Bitmap leftMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l);
@@ -167,7 +150,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
     public void initCreateGhosts() {
-        while (ghostList.size() < 6) {
+        while (ghostList.size() < 4) {
             Random rand = new Random();
             int x = rand.nextInt(2000);
             int y = rand.nextInt(2000);
@@ -175,12 +158,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 x = rand.nextInt(2000);
                 y = rand.nextInt(2000);
             }
-            int speed = rand.nextInt(5) + 3;
+            int speed = rand.nextInt(3) + difficulty * 2 + 2;
             double angle = rand.nextDouble()*6;
-            Ghost ghost1 = new Ghost(ghostBit, x, y, 3, 9, 1, 2, 2, 2, 2, speed, angle, background);
+            Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
 
-            MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 3, 9, 1, 2, 2, 2, 2, speed-2, angle, background);
+            MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed-2, angle, background);
             ghostList.add(megaGhost1);
         }
     }
@@ -207,8 +190,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             background.setDirection(4);
                         } else {
                             background.setDirection(0);
-                            if (System.currentTimeMillis() > lastShot + 1000) {
-                                bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY()));
+                            heart.handleActionDown((int) event.getX(), (int) event.getY());
+                            if ((numCoins >= heart.getMinCost() && heart.isTouched())  ) {
+                                if (System.currentTimeMillis() > heart.getLastBuy() + 1000) {
+                                    health.subtractDamage(5);
+                                    numCoins--;
+                                    heart.setLastBuy(System.currentTimeMillis());
+                                }
+                            }
+                            else if (System.currentTimeMillis() > lastShot + 1000) {
+                                bulletList.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), character, 13, event.getX(), event.getY()));
                                 sound.playGun();
                                 lastShot = System.currentTimeMillis();
                             }
@@ -316,15 +307,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             distanceY = ghostList.get(i).getY()+0.5*ghostList.get(index).getSpriteHeight()-(character.getY()+0.5*character.getSpriteHeight());
             Double dist = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceY, 2));
             if(dist.compareTo(min)<0) {
-               min = dist;
-               index = i;
+                min = dist;
+                index = i;
             }
         }
         return index;
     }
 
     public void createGhostMap() {
-        if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=(10 + 3 * difficulty)) {
+        if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=(5*difficulty)) {
             Random rand = new Random();
             int width = background.getWidth();
             int bx = background.getXCoord();
@@ -336,12 +327,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 x = rand.nextInt(width) + bx;
                 y = rand.nextInt(height) + by;
             }
-            int speed = rand.nextInt(5) + 2*difficulty;
+            int speed = rand.nextInt(3) + 2*difficulty + 2;
             double angle = rand.nextDouble()*6;
-            Ghost ghost1 = new Ghost(ghostBit, x, y, 3, 9, 1, 2, 2, 2, 2, speed, angle, background);
+            Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
 
-            MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 3, 9, 1, 2, 2, 2, 2, speed-2, angle, background);
+            MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed-2, angle, background);
             ghostList.add(megaGhost1);
         }
     }
@@ -354,16 +345,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)) < 0.75 * ((double) character.getSpriteWidth())) {
                 gameOver = true;
             } else if (Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)) < 2 * character.getSpriteWidth()) {
-//<<<<<<< Updated upstream
-//                gameOver = health.addDamage(difficulty);
-//=======
                 if(ghostList.get(index) instanceof MegaGhost){
                     gameOver = health.addDamage(2*difficulty);
                 }
                 else {
                     gameOver = health.addDamage(difficulty);
                 }
-//>>>>>>> Stashed changes
             }
         }
     }
@@ -380,12 +367,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 Bullet f = bulletList.get(j);
                 Rect e = new Rect(f.getXCoord(),f.getYCoord(),f.getXCoord() + f.getWidth(), f.getYCoord() + f.getHeight());
 
-                    if(ghostList.get(i) instanceof MegaGhost) {
-                        if (((MegaGhost) ghostList.get(i)).getGhostDamage() > 0) {
+                if (Rect.intersects(ghostList.get(i).getHitbox(),e)) {
+                    if (ghostList.get(i) instanceof MegaGhost) {
+                        if (((MegaGhost) ghostList.get(i)).getGhostDamage() == 1) {
                             int coinX = ghostList.get(i).getX();
                             int coinY = ghostList.get(i).getY();
-                            Bitmap coinMap = BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold);
-                            coinList.add(new Coin(coinMap, coinX, coinY, 3, 8, System.currentTimeMillis(), background));
+                            coinList.add(new Coin(BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold), coinX, coinY, 6, 8, System.currentTimeMillis(), background));
                             ghostList.remove(i);
                             bulletList.remove(j);
                             sound.playScream();
@@ -393,29 +380,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             killedGhosts++;
                             health.subtractDamage(2);
                             return true;
-                        }
-                        else {
+                        } else {
+                            bulletList.remove(j);
                             ((MegaGhost) ghostList.get(i)).setGhostDamage(1);
                         }
-                    }
-
-                    else if (Rect.intersects(ghostList.get(i).getHitbox(),e)) {
-                            int coinX = ghostList.get(i).getX();
-                            int coinY = ghostList.get(i).getY();
-                            coinList.add(new Coin(coinBit, coinX, coinY, 3, 8, System.currentTimeMillis(),background));
-                            ghostList.remove(i);
-                            bulletList.remove(j);
-                            sound.playScream();
-                            score += 2500;
-                            killedGhosts++;
-                            return true;
-
-                        }
-                    else{
+                    } else {
                         int coinX = ghostList.get(i).getX();
                         int coinY = ghostList.get(i).getY();
-                        Bitmap coinMap = BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold);
-                        coinList.add(new Coin(coinMap, coinX, coinY, 3, 8, System.currentTimeMillis(), background));
+                        coinList.add(new Coin(BitmapFactory.decodeResource(getResources(), R.drawable.spinning_coin_gold), coinX, coinY, 6, 8, System.currentTimeMillis(), background));
                         ghostList.remove(i);
                         bulletList.remove(j);
                         sound.playScream();
@@ -423,9 +395,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         killedGhosts++;
                         health.subtractDamage(1);
                         return true;
+
                     }
                 }
             }
+        }
         return false;
 
     }
@@ -446,6 +420,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         left.draw(canvas);
         down.draw(canvas);
         right.draw(canvas);
+        health.draw(canvas);
         for(Bullet b : bulletList) {
             b.draw(canvas);
         }
@@ -453,7 +428,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (g.getX()<=screenWidth || g.getY()<=screenHeight || g.getX() >= -g.getSpriteWidth() || g.getY() >=-g.getSpriteHeight())
                 g.draw(canvas);
         }
-        health.draw(canvas);
+        if (numCoins >= heart.getMinCost()) {
+            heart.draw(canvas);
+        }
         canvas.drawText(("0000000000"+displayScore).substring((""+displayScore).length()),health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize() , paint);
         canvas.drawText(""+numCoins,health.getX(), health.getY() + health.getHealth().getHeight() + 2*paint.getTextSize() , paint);
 
