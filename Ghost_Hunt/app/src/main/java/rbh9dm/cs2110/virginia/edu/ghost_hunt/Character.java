@@ -137,10 +137,51 @@ public class Character {
         this.healthLevel = healthLevel;
 
     }
+
+    public int getNumStill() {
+        return numStill;
+    }
+
+    public void setNumStill(int numStill) {
+        this.numStill = numStill;
+    }
+
+    public int getNumUp() {
+        return numUp;
+    }
+
+    public void setNumUp(int numUp) {
+        this.numUp = numUp;
+    }
+
+    public int getNumLeft() {
+        return numLeft;
+    }
+
+    public void setNumLeft(int numLeft) {
+        this.numLeft = numLeft;
+    }
+
+    public int getNumRight() {
+        return numRight;
+    }
+
+    public void setNumRight(int numRight) {
+        this.numRight = numRight;
+    }
+
+    public int getNumDown() {
+        return numDown;
+    }
+
+    public void setNumDown(int numDown) {
+        this.numDown = numDown;
+    }
+
     /*
-    Updates character once per frame period
-     Takes a direction (0=still,1=up,2=left,3=right,4=down) to determine which sprite to print
-    */
+                        Updates character once per frame period
+                         Takes a direction (0=still,1=up,2=left,3=right,4=down) to determine which sprite to print
+                        */
     public void update(long gameTime, int direction) {
         if (gameTime > frameTicker + framePeriod) {
             frameTicker = gameTime;

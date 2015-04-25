@@ -14,6 +14,7 @@ public class Sounds {
 
     private SoundPool soundPool;
     private Random rand;
+    private int wakaID;
 
     Sounds(Context context) {
         rand = new Random();
@@ -25,6 +26,8 @@ public class Sounds {
         soundPool.load(context, R.raw.cash, 5);
         soundPool.load(context, R.raw.laser, 6);
         soundPool.load(context, R.raw.flashbang, 7);
+        soundPool.load(context, R.raw.waka, 8);
+        wakaID = 1;
     }
 
     public void playFlashbang() {
@@ -50,6 +53,13 @@ public class Sounds {
 
     public void playCash() {
         soundPool.play(5,1,1,0,0,1);
+    }
+
+    public void playWaka(){
+        wakaID = soundPool.play(8,1,1,0,-1,1);
+    }
+    public void stopWaka() {
+        soundPool.stop(wakaID);
     }
 
     public void release() {
