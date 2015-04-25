@@ -23,6 +23,7 @@ public class Sounds {
         soundPool.load(context, R.raw.scream2, 3);
         soundPool.load(context, R.raw.scream3, 4);
         soundPool.load(context, R.raw.cash, 5);
+        soundPool.load(context, R.raw.laser, 6);
     }
 
     public void playUgh() {
@@ -31,6 +32,10 @@ public class Sounds {
 
     public void playGun() {
         soundPool.play(1,1,1,0,0,1);
+    }
+
+    public void playLaser() {
+        soundPool.play(6,1,1,0,0,1);
     }
 
     public void playScream() {

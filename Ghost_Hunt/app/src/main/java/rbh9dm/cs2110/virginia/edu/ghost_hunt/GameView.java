@@ -228,7 +228,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             else if (System.currentTimeMillis() > lastShot + 1000) {
                                 if (saiyan) {
                                     bulletList.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.saiyanball), character, 22, event.getX(), event.getY(), 800, true));
-                                    sound.playGun();
+                                    sound.playLaser();
                                     lastShot = System.currentTimeMillis();
                                 }
                                 else  {
