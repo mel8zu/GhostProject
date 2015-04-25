@@ -32,7 +32,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private HealthBar health;
     private ArrayList<Bullet> bulletList;
     private ArrayList<Ghost> ghostList;
-    //private ArrayList<MegaGhost> megaGhostList;
     private long lastShot;
     private long score;
     private long prevTime;
@@ -48,15 +47,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean setScore;
     private ArrayList<Coin> coinList;
     private Sounds sound;
-    private Bitmap ghostBit;
     private int numCoins;
     private BuyButton heart;
-    private Bitmap megaGhostBit;
     private BuyButton saiyanButton;
-    private Bitmap characterBit;
-    private Bitmap saiyanBit;
     private long saiyanTime;
     private boolean saiyan;
+
+    private Bitmap characterBit;
+    private Bitmap ghostBit;
+    private Bitmap megaGhostBit;
+    private Bitmap saiyanBit;
+    private Bitmap backgroundBit;
+    private Bitmap bulletBit;
+    private Bitmap saiyanBlastBit;
+    private Bitmap heartBit;
+    private Bitmap saiyanButtonBit;
+    private Bitmap healthBit;
+    private Bitmap deathBit;
+    private Bitmap upMap;
+    private Bitmap downMap;
+    private Bitmap leftMap;
+    private Bitmap rightMap;
 
     /*
     Constructor: where the stuff that appears on screen is declared
@@ -79,6 +90,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         saiyanTime = 0;
         saiyan = false;
 
+        ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
+        megaGhostBit = BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost);
+        characterBit = BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter);
+        saiyanBit = BitmapFactory.decodeResource(getResources(), R.drawable.saiyan);
+        heartBit = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
+        saiyanButtonBit = BitmapFactory.decodeResource(getResources(), R.drawable.saiyanbutton);
+        upMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u);
+        leftMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l);
+        rightMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r);
+        downMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d);
+        bulletBit = BitmapFactory.decodeResource(getResources(), R.drawable.bullet);
+        saiyanBlastBit = BitmapFactory.decodeResource(getResources(), R.drawable.saiyanball);
+        healthBit = BitmapFactory.decodeResource(getResources(), R.drawable.health);
+        deathBit = BitmapFactory.decodeResource(getResources(), R.drawable.dead);
+
+
+
         sound = new Sounds(context);
 
         score = 0;
@@ -86,25 +114,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         prevTime = System.currentTimeMillis();
         killedGhosts = 0;
         numCoins = 0;
-        Bitmap heartBit = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
-        Bitmap saiyanButtonBit = BitmapFactory.decodeResource(getResources(), R.drawable.saiyanbutton);
         heart = new BuyButton(heartBit,screenWidth - heartBit.getWidth() - 10, screenHeight/2, 1, System.currentTimeMillis());
         saiyanButton = new BuyButton(saiyanButtonBit,screenWidth - saiyanButtonBit.getWidth() - 10, screenHeight/2 - 20 - heartBit.getHeight(), 1, System.currentTimeMillis());
-        ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
-        megaGhostBit = BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost);
-        characterBit = BitmapFactory.decodeResource(getResources(), R.drawable.maincharacter);
-        saiyanBit = BitmapFactory.decodeResource(getResources(), R.drawable.saiyan);
 
         character = new Character(characterBit, 0, 300, 6, 14,6,2,2,2,2);
         character.setX(screenWidth/2 - character.getSpriteWidth()/2);
 
-        if (level == 3) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.desert3), 0, 0, 5);
-        else if (level == 2) background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.winter2), 0, 0, 5);
-        else  background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.forest), 0, 0, 5);
+        if (level == 3) {
+            backgroundBit = BitmapFactory.decodeResource(getResources(), R.drawable.desert3);
+        }
+        else if (level == 2) {
+            backgroundBit = BitmapFactory.decodeResource(getResources(), R.drawable.winter2);
+        }
+        else  {
+            backgroundBit = BitmapFactory.decodeResource(getResources(), R.drawable.forest);
+        }
+        background = new Background(backgroundBit, 0, 0, 5);
 
         bulletList = new ArrayList<Bullet>();
         ghostList = new ArrayList<Ghost>();
-        //megaGhostList = new ArrayList<MegaGhost>();
         coinList = new ArrayList<Coin>();
         initCreateGhosts();
 
@@ -112,18 +140,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         ghostList = new ArrayList<Ghost>();
         coinList = new ArrayList<Coin>();
         initCreateGhosts();
-
-        Bitmap upMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u);
-        Bitmap leftMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l);
-        Bitmap rightMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r);
-        Bitmap downMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d);
 
         down = new DirectionButton(downMap , (int) (screenWidth/2 - 0.5*downMap.getWidth()), screenHeight - downMap.getHeight() - 25);
         up = new DirectionButton(upMap , (int) (screenWidth/2 - 0.5*upMap.getWidth()), down.getY() - downMap.getHeight() - 25);
         left = new DirectionButton(leftMap , down.getX() - leftMap.getWidth() - 10, screenHeight - leftMap.getHeight() - 25);
         right = new DirectionButton(rightMap , down.getX() + downMap.getWidth() + 10, screenHeight - rightMap.getHeight() - 25);
 
-        health = new HealthBar(BitmapFactory.decodeResource(getResources(), R.drawable.health),BitmapFactory.decodeResource(getResources(), R.drawable.dead),10,10, character.getHealthLevel());
+        health = new HealthBar(healthBit,deathBit,10,10, character.getHealthLevel());
 
         gameOver = false;
         setScore = false;
@@ -217,6 +240,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             }
                             else if ((numCoins >= saiyanButton.getMinCost() && saiyanButton.isTouched())  ) {
                                 if (System.currentTimeMillis() > heart.getLastBuy() + 1000) {
+                                    sound.playFlashbang();
                                     character.setBitmap(saiyanBit);
                                     background.setSpeed(background.getSpeed() + 5);
                                     numCoins-=1;
@@ -227,12 +251,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             }
                             else if (System.currentTimeMillis() > lastShot + 1000) {
                                 if (saiyan) {
-                                    bulletList.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.saiyanball), character, 22, event.getX(), event.getY(), 800, true));
+                                    bulletList.add(new Bullet(saiyanBlastBit, character, 22, event.getX(), event.getY(), 800, true));
                                     sound.playLaser();
                                     lastShot = System.currentTimeMillis();
                                 }
                                 else  {
-                                bulletList.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), character, 13, event.getX(), event.getY(), 550, false));
+                                bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false));
                                 sound.playGun();
                                 lastShot = System.currentTimeMillis();
                                 }
@@ -254,65 +278,63 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     Where everything is updated. Called once per run through the game loop
      */
     public void update() {
+        if (!gameOver) {
+            if (saiyan == true) {
+                if (System.currentTimeMillis() > saiyanTime + 20000) {
+                    character.setBitmap(characterBit);
+                    background.setSpeed(background.getSpeed() - 5);
+                    saiyan = false;
+                }
+            }
+            background.update();
+            character.update(System.currentTimeMillis(), background.getDirection());
+            walkOffScreen();
+            for (Coin c : coinList) {
+                c.update(System.currentTimeMillis());
+            }
+            Iterator<Bullet> iterator = bulletList.iterator();
+            while (iterator.hasNext()) {
+                Bullet b = iterator.next();
+                int dir = background.getDirection();
+                if (dir == 0) {
+                    b.update();
+                } else if (dir == 1) {
+                    b.setyVelocity(b.getyVelocity() + background.getSpeed());
+                    b.update();
+                    b.setyVelocity(b.getyVelocity() - background.getSpeed());
+                } else if (dir == 2) {
+                    b.setxVelocity(b.getxVelocity() + background.getSpeed());
+                    b.update();
+                    b.setxVelocity(b.getxVelocity() - background.getSpeed());
+                } else if (dir == 3) {
+                    b.setxVelocity(b.getxVelocity() - background.getSpeed());
+                    b.update();
+                    b.setxVelocity(b.getxVelocity() + background.getSpeed());
+                } else if (dir == 4) {
+                    b.setyVelocity(b.getyVelocity() - background.getSpeed());
+                    b.update();
+                    b.setyVelocity(b.getyVelocity() + background.getSpeed());
+                }
+                if (b.getDistance() > b.getMaxDistance())
+                    iterator.remove();
+            }
+            for (Ghost g : ghostList) {
+                g.update(System.currentTimeMillis());
+            }
+            displayScore();
+            createGhostMap();
+            manageHealth();
+            manageCoins();
+
+            ghostDown();
+        }
         if(gameOver && !setScore) {
             thread.setRunning(false);
             setScore = true;
             sound.release();
             play.updateHighScore(("0000000000"+displayScore).substring((""+displayScore).length()));
+            recycleBits();
         }
-        if (saiyan == true) {
-            if (System.currentTimeMillis() > saiyanTime + 20000) {
-                character.setBitmap(characterBit);
-                background.setSpeed(background.getSpeed() - 5);
-                saiyan = false;
-            }
-        }
-        background.update();
-        character.update(System.currentTimeMillis(),background.getDirection());
-        walkOffScreen();
-        for(Coin c : coinList) {
-            c.update(System.currentTimeMillis());
-        }
-        Iterator<Bullet> iterator = bulletList.iterator();
-        while(iterator.hasNext()) {
-            Bullet b = iterator.next();
-            int dir = background.getDirection();
-            if (dir == 0) {
-                b.update();
-            }
-            else if (dir == 1) {
-                b.setyVelocity(b.getyVelocity() + background.getSpeed());
-                b.update();
-                b.setyVelocity(b.getyVelocity() - background.getSpeed());
-            }
-            else if (dir == 2) {
-                b.setxVelocity(b.getxVelocity() + background.getSpeed());
-                b.update();
-                b.setxVelocity(b.getxVelocity() - background.getSpeed());
-            }
-            else if (dir == 3) {
-                b.setxVelocity(b.getxVelocity() - background.getSpeed());
-                b.update();
-                b.setxVelocity(b.getxVelocity() + background.getSpeed());
-            }
-            else if (dir == 4) {
-                b.setyVelocity(b.getyVelocity() - background.getSpeed());
-                b.update();
-                b.setyVelocity(b.getyVelocity() + background.getSpeed());
-            }
-            if(b.getDistance()>b.getMaxDistance())
-                iterator.remove();
-        }
-        for(Ghost g : ghostList) {
-            g.update(System.currentTimeMillis());
-        }
-        displayScore();
-        createGhostMap();
-        manageHealth();
-        manageCoins();
-
-        ghostDown();
-
 
     }
 
@@ -544,32 +566,67 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawColor(Color.BLACK);
-        background.draw(canvas);
-        for (Coin c : coinList) {
-            c.draw(canvas);
-        }
-        character.draw(canvas);
-        up.draw(canvas);
-        left.draw(canvas);
-        down.draw(canvas);
-        right.draw(canvas);
-        health.draw(canvas);
-        for(Bullet b : bulletList) {
-            b.draw(canvas);
-        }
-        for(Ghost g : ghostList) {
-            if (g.getX()<=screenWidth || g.getY()<=screenHeight || g.getX() >= -g.getSpriteWidth() || g.getY() >=-g.getSpriteHeight())
-                g.draw(canvas);
-        }
-        if (numCoins >= heart.getMinCost()) {
-            heart.draw(canvas);
-        }
-        if (numCoins >= saiyanButton.getMinCost()) {
-            saiyanButton.draw(canvas);
+        if (!gameOver) {
+            background.draw(canvas);
+            for (Coin c : coinList) {
+                c.draw(canvas);
+            }
+            character.draw(canvas);
+            up.draw(canvas);
+            left.draw(canvas);
+            down.draw(canvas);
+            right.draw(canvas);
+            health.draw(canvas);
+            for (Bullet b : bulletList) {
+                b.draw(canvas);
+            }
+            for (Ghost g : ghostList) {
+                if (g.getX() <= screenWidth || g.getY() <= screenHeight || g.getX() >= -g.getSpriteWidth() || g.getY() >= -g.getSpriteHeight())
+                    g.draw(canvas);
+            }
+            if (numCoins >= heart.getMinCost()) {
+                heart.draw(canvas);
+            }
+            if (numCoins >= saiyanButton.getMinCost()) {
+                saiyanButton.draw(canvas);
+            }
         }
         canvas.drawText(("0000000000"+displayScore).substring((""+displayScore).length()),health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize() , paint);
         canvas.drawText(""+numCoins,health.getX(), health.getY() + health.getHealth().getHeight() + 2*paint.getTextSize() , paint);
 
+    }
+
+    public void recycleBits() {
+        saiyanBit.recycle();
+        saiyanBit = null;
+        characterBit.recycle();
+        characterBit = null;
+        ghostBit.recycle();
+        ghostBit = null;
+        megaGhostBit.recycle();
+        megaGhostBit = null;
+        backgroundBit.recycle();
+        backgroundBit = null;
+        bulletBit.recycle();
+        bulletBit = null;
+        saiyanBlastBit.recycle();
+        saiyanBlastBit = null;
+        heartBit.recycle();
+        heartBit = null;
+        saiyanButtonBit.recycle();
+        saiyanButtonBit = null;
+        healthBit.recycle();
+        healthBit = null;
+        deathBit.recycle();
+        deathBit = null;
+        upMap.recycle();
+        upMap = null;
+        downMap.recycle();
+        downMap = null;
+        leftMap.recycle();
+        leftMap = null;
+        rightMap.recycle();
+        rightMap = null;
     }
 
     public void shutDownThread() {

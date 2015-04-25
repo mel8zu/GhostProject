@@ -24,6 +24,11 @@ public class Sounds {
         soundPool.load(context, R.raw.scream3, 4);
         soundPool.load(context, R.raw.cash, 5);
         soundPool.load(context, R.raw.laser, 6);
+        soundPool.load(context, R.raw.flashbang, 7);
+    }
+
+    public void playFlashbang() {
+        soundPool.play(7,1,1,0,0,1);
     }
 
     public void playUgh() {
