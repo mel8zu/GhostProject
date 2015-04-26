@@ -23,6 +23,7 @@ public class Sounds {
         soundPool.load(context, R.raw.scream2, 3);
         soundPool.load(context, R.raw.scream3, 4);
         soundPool.load(context, R.raw.cash, 5);
+        //soundPool.load(context, R.raw.gemBoost, 6);
     }
 
     public void playGun() {
@@ -36,6 +37,10 @@ public class Sounds {
 
     public void playCash() {
         soundPool.play(5,1,1,0,0,1);
+    }
+
+    public void playGemBoost() {
+        soundPool.play(6,1,1,0,0,1);
     }
 
     public void release() {

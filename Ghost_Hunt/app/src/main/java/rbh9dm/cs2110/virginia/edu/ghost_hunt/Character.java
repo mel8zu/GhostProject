@@ -3,11 +3,12 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  * Created by Student User on 4/8/2015.
  */
-public class Character {
+public class Character extends RectF{
     protected int x; //x location
     protected int y; //y location
     protected Bitmap bitmap; //holds the spritesheet
@@ -45,6 +46,7 @@ public class Character {
         this.numRight = numRight;
         this.numDown = numDown;
         this.healthLevel = 100;
+        this.set(this.getX(), this.getY(), this.getX() + this.getSpriteWidth(), this.getY() + this.getSpriteHeight());
 
     }
 
@@ -195,6 +197,11 @@ public class Character {
 
     public Rect getHitbox() {
         Rect destRect = new Rect(getX(), getY(), getX() + spriteWidth, getY() + spriteHeight);
+        return destRect;
+    }
+
+    public Rect getHitbox2() {
+        Rect destRect = new Rect(getX()+25, getY(), getX() + spriteWidth-25, getY() + spriteHeight-25);
         return destRect;
     }
 
