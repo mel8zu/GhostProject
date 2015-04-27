@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.Display;
@@ -30,6 +31,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DirectionButton right;
     private DirectionButton down;
     private DirectionButton layBarrier;
+    private DirectionButton layBarrier2;
+    private ArrayList<DirectionButton> layBarrierList;
     private HealthBar health;
     private ArrayList<Bullet> bulletList;
     private ArrayList<Ghost> ghostList;
@@ -200,7 +203,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         up = new DirectionButton(upMap , (int) (screenWidth/2 - 0.5*upMap.getWidth()), down.getY() - downMap.getHeight() - 25);
         left = new DirectionButton(leftMap , down.getX() - leftMap.getWidth() - 10, screenHeight - leftMap.getHeight() - 25);
         right = new DirectionButton(rightMap , down.getX() + downMap.getWidth() + 10, screenHeight - rightMap.getHeight() - 25);
+        layBarrierList = new ArrayList<DirectionButton>();
         layBarrier = new DirectionButton(barrierMap , 710, 80);
+        layBarrierList.add(layBarrier);
+        layBarrier2 = new DirectionButton(barrierMap , 710, 180);
 
         health = new HealthBar(healthBit,deathBit,10,10, character.getHealthLevel());
 
@@ -277,25 +283,42 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             ghostList.add(megaGhost1);
         }
     }
+    int count = 2;
+    boolean barrierMode = false;
     /*
     When the screen is touched, this method tells the game what to do
      */
     @Override
+
+
     public boolean onTouchEvent(MotionEvent event) {
 
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if((level==1) && (barrierMode==true)){
+                barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), (int)event.getX(), (int)event.getY(),5));
+            }
+            else if((level==2) && (barrierMode==true)){
+                barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.iceresized), (int)event.getY(), (int)event.getY(),5));
+            }
+            else{
+                if(barrierMode==true)
+                barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), character.getX(), character.getY()+200,5));
+            }
             layBarrier.handleActionDown((int) event.getX(), (int) event.getY());
             if(layBarrier.isTouched()){
-                if(level==1){
-                    barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), character.getX(), character.getY()+100,5));
+                if(count % 2==0) {
+                    layBarrierList.add(layBarrier2);
+                    barrierMode = true;
+                    count++;
                 }
-                else if(level==2){
-                    barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.iceresized), character.getX(), character.getY()+100,5));
-                }
-                else{
-                    barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), character.getX(), character.getY()+100,5));
+                else if(count%2 !=0) {
+                    layBarrierList.remove(layBarrier2);
+                    barrierMode = false;
+                    count++;
                 }
             }
+
             up.handleActionDown((int) event.getX(), (int) event.getY());
             if (up.isTouched()) {
                 background.setDirection(1);
@@ -360,10 +383,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setNumUp(2);
                                     character.setNumRight(2);
                                     character.setCurrentFrame(0);
-<<<<<<< HEAD
+
                                     character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
                                     character.setSpriteHeight(character.getBitmap().getHeight());
-=======
+
 
                                     character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());
                                     character.setSpriteHeight(character.getBitmap().getHeight());
@@ -371,7 +394,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());;
                                     character.setSpriteHeight(character.getBitmap().getHeight());;
 
->>>>>>> origin/project
+
                                     character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
                                     background.setSpeed(background.getSpeed() + 5);
                                     for(Ghost g:ghostList) {
@@ -399,10 +422,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setNumUp(4);
                                     character.setNumRight(4);
                                     character.setCurrentFrame(0);
-<<<<<<< HEAD
+
                                     background.setSpeed(background.getSpeed() - 5);
-=======
->>>>>>> origin/project
+
                                     character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());
                                     character.setSpriteHeight(character.getBitmap().getHeight());
                                     character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
@@ -440,21 +462,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             }
 
                             else if (System.currentTimeMillis() > lastShot + 1000 && !isPacman) {
-                                if (isSaiyan) {
+                                if (isSaiyan && barrierMode==false) {
                                     bulletList.add(new Bullet(saiyanBlastBit, character, 22, event.getX(), event.getY(), 800, true, false));
                                     sound.playLaser();
                                     lastShot = System.currentTimeMillis();
                                 }
-                                else if (numSuperBullets>0) {
+                                else if (numSuperBullets>0 && barrierMode==false) {
                                     numSuperBullets--;
                                     bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, true));
                                     sound.playGun();
                                     lastShot = System.currentTimeMillis();
                                 }
                                 else  {
-                                bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, false));
-                                sound.playGun();
-                                lastShot = System.currentTimeMillis();
+                                    if(barrierMode==false) {
+                                        bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, false));
+                                        sound.playGun();
+                                        lastShot = System.currentTimeMillis();
+                                    }
                                 }
                             }
                         }
@@ -1077,7 +1101,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
 
             layBarrier.draw(canvas);
-
+            for(DirectionButton element : layBarrierList) {
+                element.draw(canvas);
+            }
             for (Bullet b : bulletList) {
                 b.draw(canvas);
             }
