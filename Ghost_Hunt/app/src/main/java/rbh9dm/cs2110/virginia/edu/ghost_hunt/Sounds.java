@@ -29,6 +29,7 @@ public class Sounds {
         soundPool.load(context, R.raw.laser, 6);
         soundPool.load(context, R.raw.flashbang, 7);
         soundPool.load(context, R.raw.waka, 8);
+        soundPool.load(context, R.raw.bomb, 9);
         wakaID = 0;
         playedWaka = false;
     }
@@ -69,6 +70,10 @@ public class Sounds {
     }
     public void stopWaka() {
         soundPool.pause(wakaID);
+    }
+
+    public void playBoom() {
+        soundPool.play(9,1,1,0,0,1);
     }
 
     public void release() {

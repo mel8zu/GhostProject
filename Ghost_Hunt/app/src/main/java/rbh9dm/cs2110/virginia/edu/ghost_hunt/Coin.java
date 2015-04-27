@@ -133,6 +133,23 @@ public class Coin {
             sourceRect.right = sourceRect.left + spriteWidth;
         }
     }
+
+    public int getCurrentFrame() {
+        return currentFrame;
+    }
+
+    public void setCurrentFrame(int currentFrame) {
+        this.currentFrame = currentFrame;
+    }
+
+    public long getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(long timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
     public void draw(Canvas canvas) {
         Rect destRect = new Rect(xCoord, yCoord, xCoord + spriteWidth, yCoord + spriteHeight);
         canvas.drawBitmap(bitmap, sourceRect, destRect, null);
