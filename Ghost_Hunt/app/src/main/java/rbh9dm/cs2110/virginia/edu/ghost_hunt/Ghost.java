@@ -1,6 +1,7 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 
 
 /**
@@ -13,6 +14,8 @@ public class Ghost extends Character {
     private double xVelocity;
     private double yVelocity;
     private Background background;
+    private boolean friendly;
+    private long timeFriendly;
 
     public Ghost(Bitmap bitmap, int x, int y, int fps, int frameNr, int numStill, int numUp, int numLeft, int numRight, int numDown, int speed, double angle, Background background) {
         super(bitmap, x, y, fps, frameNr, numStill, numUp, numLeft, numRight, numDown);
@@ -21,6 +24,8 @@ public class Ghost extends Character {
         this.xVelocity = this.speed * Math.cos(this.angle);
         this.yVelocity = this.speed * Math.sin(this.angle);
         this.background = background;
+        this.friendly = false;
+        this.timeFriendly = 0;
     }
 
     /*
@@ -58,9 +63,33 @@ public class Ghost extends Character {
         this.yVelocity = yVelocity;
     }
 
+    public Background getBackground() {
+        return background;
+    }
+
+    public void setBackground(Background background) {
+        this.background = background;
+    }
+
+    public boolean isFriendly() {
+        return friendly;
+    }
+
+    public void setFriendly(boolean friendly) {
+        this.friendly = friendly;
+    }
+
+    public long getTimeFriendly() {
+        return timeFriendly;
+    }
+
+    public void setTimeFriendly(long timeFriendly) {
+        this.timeFriendly = timeFriendly;
+    }
+
     /*
-    makes yVelocity positive
-     */
+                makes yVelocity positive
+                 */
     public void posYVelocity() {
         yVelocity = Math.abs(yVelocity);
     }
@@ -152,6 +181,7 @@ public class Ghost extends Character {
             y += yVelocity;
             reset(direction);
 
+
             if (x < background.getXCoord() + 2) {
                 posXVelocity();
             } else if (x + spriteWidth > background.getXCoord() + background.getWidth() - 2) {
@@ -163,5 +193,23 @@ public class Ghost extends Character {
                 negYVelocity();
             }
 
+    }
+
+    public boolean isPosX(){
+        if(xVelocity>0){
+            return true;
+        }
+        return false;
+    }
+    public boolean isPosY(){
+        if(yVelocity>0){
+            return true;
+        }
+        return false;
+    }
+
+    public Rect getHitbox() {
+        Rect destRect = new Rect(getX(), getY(), getX() + spriteWidth, getY() + spriteHeight);
+        return destRect;
     }
 }

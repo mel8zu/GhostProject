@@ -18,12 +18,13 @@ public class Bullet extends Moveable {
     private double distance; //distance the bullet has travelled
     private double maxDistance;
     private boolean mega;
+    private boolean superBull;
 
 
     /*
     Constructor
      */
-    public Bullet(Bitmap bitmap, Character character, double speed, double targetX, double targetY, int maxDistance, boolean mega) {
+    public Bullet(Bitmap bitmap, Character character, double speed, double targetX, double targetY, int maxDistance, boolean mega, boolean superBull) {
         super(bitmap, 0, 0);
 
         this.character = character;
@@ -42,6 +43,7 @@ public class Bullet extends Moveable {
         this.yVelocity = this.speed * this.deltaY/delta;
         this.maxDistance = maxDistance;
         this.mega = mega;
+        this.superBull = superBull;
     }
     /*
     Getters & Setters
@@ -134,9 +136,17 @@ public class Bullet extends Moveable {
         this.mega = mega;
     }
 
+    public boolean isSuperBull() {
+        return superBull;
+    }
+
+    public void setSuperBull(boolean superBull) {
+        this.superBull = superBull;
+    }
+
     /*
-            Performs pythagorean theorem given change in x and change in y
-             */
+                Performs pythagorean theorem given change in x and change in y
+                 */
     public double calcDistance(double delta1, double delta2) {
         return Math.sqrt(Math.pow(delta1,2)+Math.pow(delta2,2));
     }
