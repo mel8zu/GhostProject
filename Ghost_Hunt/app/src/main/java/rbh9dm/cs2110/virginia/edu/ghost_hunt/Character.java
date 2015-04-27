@@ -241,7 +241,7 @@ public class Character {
     }
 
     public Rect getHitbox2() {
-        Rect destRect = new Rect(getX()+25, getY(), getX() + spriteWidth-25, getY() + spriteHeight-25);
+        Rect destRect = new Rect(getX()+25, getY(), getX() + spriteWidth-25, getY() + spriteHeight);
         return destRect;
     }
 

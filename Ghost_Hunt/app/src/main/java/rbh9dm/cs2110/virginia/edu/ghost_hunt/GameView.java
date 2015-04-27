@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.Display;
@@ -30,6 +31,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DirectionButton right;
     private DirectionButton down;
     private DirectionButton layBarrier;
+    private DirectionButton layBarrier2;
+    private ArrayList<DirectionButton> layBarrierList;
     private HealthBar health;
     private ArrayList<Bullet> bulletList;
     private ArrayList<Ghost> ghostList;
@@ -157,8 +160,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         heart = new BuyButton(heartBit,screenWidth - heartBit.getWidth() - 10, screenHeight/2, 1, System.currentTimeMillis());
         saiyanButton = new BuyButton(saiyanButtonBit,screenWidth - saiyanButtonBit.getWidth() - 10, screenHeight/2 - 20 - heartBit.getHeight(), 1, System.currentTimeMillis());
         pacButton = new BuyButton(pacmanButtonBit,screenWidth - pacmanButtonBit.getWidth() - 10, screenHeight/2 - 30 - heartBit.getHeight() - saiyanButtonBit.getHeight(), 1, System.currentTimeMillis());
+<<<<<<< HEAD
         bulletButton = new BuyButton(bulletButtonBit,screenWidth - bulletButtonBit.getWidth() - 10, screenHeight/2 - 40 - heartBit.getHeight() - saiyanButtonBit.getHeight() - pacmanButtonBit.getHeight(), 1, System.currentTimeMillis());
         bombButton = new BuyButton(bombButtonBit, screenWidth - bombButtonBit.getWidth() - 10, screenHeight/2 - 50 - heartBit.getHeight() - saiyanButtonBit.getHeight() - pacmanButtonBit.getHeight() - bulletButtonBit.getHeight(), 1, System.currentTimeMillis());
+=======
+
+        bombButton = new BuyButton(bombButtonBit, screenWidth - bombButtonBit.getWidth() - 10, screenHeight/2 - 40 - heartBit.getHeight() - saiyanButtonBit.getHeight() - pacmanButtonBit.getHeight(), 1, System.currentTimeMillis());
+
+        bulletButton = new BuyButton(bulletButtonBit,screenWidth - pacmanButtonBit.getWidth() - 10, screenHeight/2 - 50 - heartBit.getHeight() - saiyanButtonBit.getHeight() - pacmanButtonBit.getHeight() - bombButtonBit.getHeight(), 1, System.currentTimeMillis());
+
+>>>>>>> origin/project
 
         character = new Character(characterBit, 0, 300, 6, 14,6,2,2,2,2);
         character.setX(screenWidth/2 - character.getSpriteWidth()/2);
@@ -199,7 +210,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         up = new DirectionButton(upMap , (int) (screenWidth/2 - 0.5*upMap.getWidth()), down.getY() - downMap.getHeight() - 25);
         left = new DirectionButton(leftMap , down.getX() - leftMap.getWidth() - 10, screenHeight - leftMap.getHeight() - 25);
         right = new DirectionButton(rightMap , down.getX() + downMap.getWidth() + 10, screenHeight - rightMap.getHeight() - 25);
+        layBarrierList = new ArrayList<DirectionButton>();
         layBarrier = new DirectionButton(barrierMap , 710, 80);
+        layBarrierList.add(layBarrier);
+        layBarrier2 = new DirectionButton(barrierMap , 710, 180);
 
         health = new HealthBar(healthBit,deathBit,10,10, character.getHealthLevel());
 
@@ -276,15 +290,31 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             ghostList.add(megaGhost1);
         }
     }
+    int count = 2;
+    boolean barrierMode = false;
     /*
     When the screen is touched, this method tells the game what to do
      */
     @Override
+
+
     public boolean onTouchEvent(MotionEvent event) {
 
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if((level==1) && (barrierMode==true)){
+                barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), (int)event.getX(), (int)event.getY(),5));
+            }
+            else if((level==2) && (barrierMode==true)){
+                barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.iceresized), (int)event.getY(), (int)event.getY(),5));
+            }
+            else{
+                if(barrierMode==true)
+                barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), character.getX(), character.getY()+200,5));
+            }
             layBarrier.handleActionDown((int) event.getX(), (int) event.getY());
             if(layBarrier.isTouched()){
+<<<<<<< HEAD
                 if(level==1){
                     barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), character.getX(), character.getY()+100,background.getSpeed()));
                 }
@@ -293,8 +323,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 else{
                     barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), character.getX(), character.getY()+100,background.getSpeed()));
+=======
+                if(count % 2==0) {
+                    layBarrierList.add(layBarrier2);
+                    barrierMode = true;
+                    count++;
+                }
+                else if(count%2 !=0) {
+                    layBarrierList.remove(layBarrier2);
+                    barrierMode = false;
+                    count++;
+>>>>>>> origin/project
                 }
             }
+
             up.handleActionDown((int) event.getX(), (int) event.getY());
             if (up.isTouched()) {
                 background.setDirection(1);
@@ -359,8 +401,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setNumUp(2);
                                     character.setNumRight(2);
                                     character.setCurrentFrame(0);
+<<<<<<< HEAD
                                     character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
                                     character.setSpriteHeight(character.getBitmap().getHeight());
+=======
+
+                                    character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
+
+
+                                    character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
+
+                                    character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());;
+                                    character.setSpriteHeight(character.getBitmap().getHeight());;
+
+
+>>>>>>> origin/project
                                     character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
                                     background.setSpeed(background.getSpeed() + 5);
                                     for (Barriers b : barrierList) {
@@ -391,6 +448,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setNumUp(4);
                                     character.setNumRight(4);
                                     character.setCurrentFrame(0);
+<<<<<<< HEAD
+=======
+
+                                    background.setSpeed(background.getSpeed() - 5);
+
+>>>>>>> origin/project
                                     character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());
                                     character.setSpriteHeight(character.getBitmap().getHeight());
                                     character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
@@ -424,21 +487,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             }
 
                             else if (System.currentTimeMillis() > lastShot + 1000 && !isPacman) {
-                                if (isSaiyan) {
+                                if (isSaiyan && barrierMode==false) {
                                     bulletList.add(new Bullet(saiyanBlastBit, character, 22, event.getX(), event.getY(), 800, true, false));
                                     sound.playLaser();
                                     lastShot = System.currentTimeMillis();
                                 }
-                                else if (numSuperBullets>0) {
+                                else if (numSuperBullets>0 && barrierMode==false) {
                                     numSuperBullets--;
                                     bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, true));
                                     sound.playGun();
                                     lastShot = System.currentTimeMillis();
                                 }
                                 else  {
-                                bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, false));
-                                sound.playGun();
-                                lastShot = System.currentTimeMillis();
+                                    if(barrierMode==false) {
+                                        bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, false));
+                                        sound.playGun();
+                                        lastShot = System.currentTimeMillis();
+                                    }
                                 }
                             }
                         }
@@ -733,8 +798,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         for (int i = 0; i < ghostList.size(); i++) {
 
+<<<<<<< HEAD
             distanceX = ghostList.get(i).getX() + 0.5 * ghostList.get(i).getSpriteWidth() - (boom.getCenterX());
             distanceY = ghostList.get(i).getY() + 0.5 * ghostList.get(i).getSpriteHeight() - (boom.getCenterY());
+=======
+            distanceX = ghostList.get(i).getX() + 0.5 * ghostList.get(i).getSpriteWidth() - (character.getX() + 0.5 * character.getSpriteWidth());
+            distanceY = ghostList.get(i).getY() + 0.5 * ghostList.get(i).getSpriteHeight() - (character.getY() + 0.5 * character.getSpriteHeight());
+>>>>>>> origin/project
             Double dist = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
             if (dist < 350) {
                 ghostList.remove(i);
@@ -744,7 +814,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/project
 
     public double calcDistance(Ghost g1, Ghost g2) {
         double distanceX = g1.getX()+0.5*g1.getSpriteWidth()-(g2.getX()+0.5*g2.getSpriteWidth());
@@ -1070,7 +1143,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
 
             layBarrier.draw(canvas);
-
+            for(DirectionButton element : layBarrierList) {
+                element.draw(canvas);
+            }
             for (Bullet b : bulletList) {
                 b.draw(canvas);
             }
@@ -1096,6 +1171,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 bombButton.draw(canvas);
             }
 
+<<<<<<< HEAD
             if (numCoins >= bulletButton.getMinCost()) {
                     bulletButton.draw(canvas);
              }
@@ -1107,6 +1183,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawText("" + numCoins, health.getX(), health.getY() + health.getHealth().getHeight() + 2 * paint.getTextSize(), paint);
             canvas.drawText("" + numSuperBullets, health.getX(), health.getY() + health.getHealth().getHeight() + 3 * paint.getTextSize(), paint);
 
+=======
+                if (numCoins >= bulletButton.getMinCost()) {
+                    bulletButton.draw(canvas);
+
+                }
+            }
+            canvas.drawText(("0000000000" + displayScore).substring(("" + displayScore).length()), health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize(), paint);
+            canvas.drawText("" + numCoins, health.getX(), health.getY() + health.getHealth().getHeight() + 2 * paint.getTextSize(), paint);
+            canvas.drawText("" + numSuperBullets, health.getX(), health.getY() + health.getHealth().getHeight() + 3 * paint.getTextSize(), paint);
+
+>>>>>>> origin/project
         }
     }
 
