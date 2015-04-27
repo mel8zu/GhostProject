@@ -530,16 +530,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 for(Ghost ghost : ghostList){
                     if(ghost.getHitbox().intersects((barrier.getXCoord()),barrier.getYCoord(), barrier.getXCoord()+barrier.getWidth(), barrier.getYCoord()+barrier.getHeight())) {
                         if(ghost.isPosX()){
+                            ghost.setX(ghost.getX()-1);
                             ghost.negXVelocity();
 
                         }
                         else if(ghost.isPosX()==false){
+                            ghost.setX(ghost.getX()+1);
                             ghost.posXVelocity();
                         }
                         if(ghost.isPosY()){
+                            ghost.setY(ghost.getY()+1);
                             ghost.negYVelocity();
                         }
                         else if(ghost.isPosY()==false){
+                            ghost.setY(ghost.getY()-1);
                             ghost.posYVelocity();
                         }
                     }
@@ -674,6 +678,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 //sound.playGemBoost();
                 iterate.remove();
                 score+=10000;
+                numCoins+=3;
             }
 
         }
