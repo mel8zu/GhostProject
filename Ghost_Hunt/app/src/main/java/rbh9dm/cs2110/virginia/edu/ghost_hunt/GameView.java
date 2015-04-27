@@ -29,6 +29,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DirectionButton left;
     private DirectionButton right;
     private DirectionButton down;
+    private DirectionButton layBarrier;
     private HealthBar health;
     private ArrayList<Bullet> bulletList;
     private ArrayList<Ghost> ghostList;
@@ -72,6 +73,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap downMap;
     private Bitmap leftMap;
     private Bitmap rightMap;
+    private Bitmap barrierMap;
     private ArrayList<Barriers> barrierList;
     private ArrayList<Alert> alertList;
     private ArrayList<Objects> objectlist;
@@ -115,6 +117,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         saiyanBlastBit = BitmapFactory.decodeResource(getResources(), R.drawable.saiyanball);
         healthBit = BitmapFactory.decodeResource(getResources(), R.drawable.health);
         deathBit = BitmapFactory.decodeResource(getResources(), R.drawable.dead);
+        if(level==1) {
+            barrierMap = BitmapFactory.decodeResource(getResources(), R.drawable.smallstone);
+        }
+        else if(level==2){
+            barrierMap = BitmapFactory.decodeResource(getResources(), R.drawable.iceresized);
+        }
+        else if(level==3){
+            barrierMap = BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd);
+        }
+
 
 
 
@@ -166,6 +178,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         up = new DirectionButton(upMap , (int) (screenWidth/2 - 0.5*upMap.getWidth()), down.getY() - downMap.getHeight() - 25);
         left = new DirectionButton(leftMap , down.getX() - leftMap.getWidth() - 10, screenHeight - leftMap.getHeight() - 25);
         right = new DirectionButton(rightMap , down.getX() + downMap.getWidth() + 10, screenHeight - rightMap.getHeight() - 25);
+        layBarrier = new DirectionButton(barrierMap , 710, 80);
 
         health = new HealthBar(healthBit,deathBit,10,10, character.getHealthLevel());
 
@@ -248,7 +261,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            layBarrier.handleActionDown((int) event.getX(), (int) event.getY());
+            if(layBarrier.isTouched()){
+                if(level==1){
+                    barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), character.getX(), character.getY()+100,5));
+                }
+                else if(level==2){
+                    barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.iceresized), character.getX(), character.getY()+100,5));
+                }
+                else{
+                    barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), character.getX(), character.getY()+100,5));
+                }
+            }
             up.handleActionDown((int) event.getX(), (int) event.getY());
             if (up.isTouched()) {
                 background.setDirection(1);
@@ -786,6 +812,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             for(Barriers element : barrierList){
                 element.draw(canvas);
             }
+
+            layBarrier.draw(canvas);
 
             for (Bullet b : bulletList) {
                 b.draw(canvas);
