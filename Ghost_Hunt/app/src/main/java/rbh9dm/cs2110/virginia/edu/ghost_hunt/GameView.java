@@ -53,9 +53,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private BuyButton saiyanButton;
     private BuyButton pacButton;
     private BuyButton bombButton;
-    private long powerupTime;
-    private boolean isSaiyan;
-    private boolean isPacman;
     private boolean isBomb;
     private BuyButton bulletButton;
     private long powerupTime;
@@ -162,7 +159,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         bombButton = new BuyButton(bombButtonBit, screenWidth - bombButtonBit.getWidth() - 10, screenHeight/2 - 40 - heartBit.getHeight() - saiyanButtonBit.getHeight() - pacmanButtonBit.getHeight(), 1, System.currentTimeMillis());
 
-        bulletButton = new BuyButton(bulletButtonBit,screenWidth - pacmanButtonBit.getWidth() - 10, screenHeight/2 - 40 - heartBit.getHeight() - saiyanButtonBit.getHeight() - pacmanButtonBit.getHeight(), 1, System.currentTimeMillis());
+        bulletButton = new BuyButton(bulletButtonBit,screenWidth - pacmanButtonBit.getWidth() - 10, screenHeight/2 - 50 - heartBit.getHeight() - saiyanButtonBit.getHeight() - pacmanButtonBit.getHeight() - bombButtonBit.getHeight(), 1, System.currentTimeMillis());
 
 
         character = new Character(characterBit, 0, 300, 6, 14,6,2,2,2,2);
@@ -757,17 +754,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         for (int i = 0; i < ghostList.size(); i++) {
 
-            distanceX = ghostList.get(i).getX()+0.5*ghostList.get(i).getSpriteWidth()-(character.getX()+0.5*character.getSpriteWidth());
-            distanceY = ghostList.get(i).getY()+0.5*ghostList.get(i).getSpriteHeight()-(character.getY()+0.5*character.getSpriteHeight());
-            Double dist = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceY, 2));
-            if(dist<350) {
-               ghostList.remove(i);
-               killedGhosts++;
-               score += 1000;
-               i--;
+            distanceX = ghostList.get(i).getX() + 0.5 * ghostList.get(i).getSpriteWidth() - (character.getX() + 0.5 * character.getSpriteWidth());
+            distanceY = ghostList.get(i).getY() + 0.5 * ghostList.get(i).getSpriteHeight() - (character.getY() + 0.5 * character.getSpriteHeight());
+            Double dist = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+            if (dist < 350) {
+                ghostList.remove(i);
+                killedGhosts++;
+                score += 1000;
+                i--;
             }
         }
-
+    }
 
     public double calcDistance(Ghost g1, Ghost g2) {
         double distanceX = g1.getX()+0.5*g1.getSpriteWidth()-(g2.getX()+0.5*g2.getSpriteWidth());
@@ -1072,10 +1069,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             down.draw(canvas);
             right.draw(canvas);
             health.draw(canvas);
-            for(Alert element : alertList){
+            for (Alert element : alertList) {
                 element.draw(canvas);
             }
-            for(Barriers element : barrierList){
+            for (Barriers element : barrierList) {
                 element.draw(canvas);
             }
 
@@ -1105,15 +1102,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (numCoins >= bombButton.getMinCost()) {
                 bombButton.draw(canvas);
 
-            if (numCoins >= bulletButton.getMinCost()) {
-                bulletButton.draw(canvas);
+                if (numCoins >= bulletButton.getMinCost()) {
+                    bulletButton.draw(canvas);
 
+                }
             }
-        }
-        canvas.drawText(("0000000000"+displayScore).substring((""+displayScore).length()),health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize() , paint);
-        canvas.drawText(""+numCoins,health.getX(), health.getY() + health.getHealth().getHeight() + 2*paint.getTextSize() , paint);
-        canvas.drawText(""+numSuperBullets, health.getX(), health.getY() + health.getHealth().getHeight() + 3*paint.getTextSize(), paint);
+            canvas.drawText(("0000000000" + displayScore).substring(("" + displayScore).length()), health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize(), paint);
+            canvas.drawText("" + numCoins, health.getX(), health.getY() + health.getHealth().getHeight() + 2 * paint.getTextSize(), paint);
+            canvas.drawText("" + numSuperBullets, health.getX(), health.getY() + health.getHealth().getHeight() + 3 * paint.getTextSize(), paint);
 
+        }
     }
 
     public void recycleBits() {
