@@ -348,8 +348,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setNumUp(2);
                                     character.setNumRight(2);
                                     character.setCurrentFrame(0);
-                                    character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());;
-                                    character.setSpriteHeight(character.getBitmap().getHeight());;
+                                    character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
                                     character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
                                     background.setSpeed(background.getSpeed() + 5);
                                     for(Ghost g:ghostList) {
@@ -376,9 +376,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setNumUp(4);
                                     character.setNumRight(4);
                                     character.setCurrentFrame(0);
-                                    character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());;
-                                    character.setSpriteHeight(character.getBitmap().getHeight());;
+                                    background.setSpeed(background.getSpeed() - 5);
+                                    character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
                                     character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
+                                    if (isSaiyan) {
+
+                                    }
                                     for(Ghost g:ghostList) {
                                         g.setBitmap(blueGhostBit);
                                     }
