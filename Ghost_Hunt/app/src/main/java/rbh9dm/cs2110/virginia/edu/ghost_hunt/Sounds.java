@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -15,6 +16,7 @@ public class Sounds {
     private SoundPool soundPool;
     private Random rand;
     private int wakaID;
+    private boolean playedWaka;
 
     Sounds(Context context) {
         rand = new Random();
@@ -27,7 +29,8 @@ public class Sounds {
         soundPool.load(context, R.raw.laser, 6);
         soundPool.load(context, R.raw.flashbang, 7);
         soundPool.load(context, R.raw.waka, 8);
-        wakaID = 1;
+        wakaID = 0;
+        playedWaka = false;
     }
 
     public void playFlashbang() {
@@ -56,10 +59,16 @@ public class Sounds {
     }
 
     public void playWaka(){
-        wakaID = soundPool.play(8,1,1,0,-1,1);
+        if (playedWaka) {
+            soundPool.resume(wakaID);
+        }
+        else {
+            wakaID = soundPool.play(8,1,1,0,-1,1);
+               playedWaka = true;
+        }
     }
     public void stopWaka() {
-        soundPool.stop(wakaID);
+        soundPool.pause(wakaID);
     }
 
     public void release() {

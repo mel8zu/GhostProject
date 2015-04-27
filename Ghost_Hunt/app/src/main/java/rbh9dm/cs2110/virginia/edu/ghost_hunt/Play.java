@@ -22,7 +22,7 @@ public abstract class Play extends Activity {
         super.onCreate(savedInstanceState);
         mp = MediaPlayer.create(this, R.raw.ghostbusters);
         mp.setLooping(true);
-        mp.setVolume(.6F,.6F);
+        mp.setVolume(.7F,.7F);
         mp.start();
         Intent i = getIntent();
         Bundle bundle = i.getExtras();
