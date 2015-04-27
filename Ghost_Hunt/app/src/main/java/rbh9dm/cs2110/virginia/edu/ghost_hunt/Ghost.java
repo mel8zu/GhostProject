@@ -1,6 +1,7 @@
 package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 
 
 /**
@@ -180,6 +181,7 @@ public class Ghost extends Character {
             y += yVelocity;
             reset(direction);
 
+
             if (x < background.getXCoord() + 2) {
                 posXVelocity();
             } else if (x + spriteWidth > background.getXCoord() + background.getWidth() - 2) {
@@ -191,5 +193,23 @@ public class Ghost extends Character {
                 negYVelocity();
             }
 
+    }
+
+    public boolean isPosX(){
+        if(xVelocity>0){
+            return true;
+        }
+        return false;
+    }
+    public boolean isPosY(){
+        if(yVelocity>0){
+            return true;
+        }
+        return false;
+    }
+
+    public Rect getHitbox() {
+        Rect destRect = new Rect(getX(), getY(), getX() + spriteWidth, getY() + spriteHeight);
+        return destRect;
     }
 }

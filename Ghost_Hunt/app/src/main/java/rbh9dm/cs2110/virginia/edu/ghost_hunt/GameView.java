@@ -457,6 +457,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     }
                 }
             }
+
+            for(Barriers barrier: barrierList){
+                for(Ghost ghost : ghostList){
+                    if(ghost.getHitbox().intersects((barrier.getXCoord()),barrier.getYCoord(), barrier.getXCoord()+barrier.getWidth(), barrier.getYCoord()+barrier.getHeight())) {
+                        if(ghost.isPosX()){
+                            ghost.negXVelocity();
+
+                        }
+                        else if(ghost.isPosX()==false){
+                            ghost.posXVelocity();
+                        }
+                        if(ghost.isPosY()){
+                            ghost.negYVelocity();
+                        }
+                        else if(ghost.isPosY()==false){
+                            ghost.posYVelocity();
+                        }
+                    }
+
+                }
+            }
             for (Barriers element : barrierList) {
                 if ((character.getHitbox2().intersects(element.getXCoord(), element.getYCoord(), element.getXCoord() + element.getWidth(), element.getYCoord() + element.getHeight()) == true)) {
 
@@ -860,6 +881,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if (c == 't') {
             int shift = background.getHeight() - 20;
             background.setYCoord(background.getYCoord() - shift);
+            for(Barriers o : barrierList){
+                o.setYCoord(o.getYCoord()-shift);
+            }
             for(Ghost g : ghostList) {
                 g.setY(g.getY() - shift);
             }
@@ -873,6 +897,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         else if (c == 'l') {
             int shift = background.getWidth() - 20;
             background.setXCoord(background.getXCoord() - shift);
+            for(Barriers o : barrierList){
+                o.setXCoord(o.getXCoord()-shift);
+            }
             for(Ghost g : ghostList) {
                 g.setX(g.getX() - shift);
             }
@@ -886,6 +913,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         else if (c == 'r') {
             int shift = background.getWidth() - 20;
             background.setXCoord(background.getXCoord() + shift);
+            for(Barriers o : barrierList){
+                o.setYCoord(o.getXCoord()+shift);
+            }
             for(Ghost g : ghostList) {
                 g.setX(g.getX() + shift);
             }
@@ -899,6 +929,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         else if (c == 'b') {
             int shift = background.getHeight() - 20;
             background.setYCoord(background.getYCoord() + shift);
+            for(Barriers o : barrierList){
+                o.setYCoord(o.getYCoord()+shift);
+            }
             for(Ghost g : ghostList) {
                 g.setY(g.getY() + shift);
             }
