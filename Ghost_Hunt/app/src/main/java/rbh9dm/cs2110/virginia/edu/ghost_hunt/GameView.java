@@ -51,9 +51,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private BuyButton heart;
     private BuyButton saiyanButton;
     private BuyButton pacButton;
+    private BuyButton bombButton;
     private long powerupTime;
     private boolean isSaiyan;
     private boolean isPacman;
+    private boolean isBomb;
 
     private Bitmap characterBit;
     private Bitmap ghostBit;
@@ -66,6 +68,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap heartBit;
     private Bitmap saiyanButtonBit;
     private Bitmap pacmanButtonBit;
+    private Bitmap bombButtonBit;
+    private Bitmap explosionBit;
     private Bitmap healthBit;
     private Bitmap deathBit;
     private Bitmap upMap;
@@ -94,6 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         powerupTime = 0;
         isSaiyan = false;
         isPacman = false;
+        isBomb = false;
 
         ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
         megaGhostBit = BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost);
@@ -103,12 +108,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         heartBit = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
         saiyanButtonBit = BitmapFactory.decodeResource(getResources(), R.drawable.saiyanbutton);
         pacmanButtonBit = BitmapFactory.decodeResource(getResources(), R.drawable.pacmanbutton);
+        bombButtonBit = BitmapFactory.decodeResource(getResources(), R.drawable.bomb);
         upMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_u);
         leftMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_l);
         rightMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_r);
         downMap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow_d);
         bulletBit = BitmapFactory.decodeResource(getResources(), R.drawable.bullet);
         saiyanBlastBit = BitmapFactory.decodeResource(getResources(), R.drawable.saiyanball);
+        explosionBit = BitmapFactory.decodeResource(getResources(), R.drawable.explosion);
         healthBit = BitmapFactory.decodeResource(getResources(), R.drawable.health);
         deathBit = BitmapFactory.decodeResource(getResources(), R.drawable.dead);
 
@@ -124,7 +131,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         heart = new BuyButton(heartBit,screenWidth - heartBit.getWidth() - 10, screenHeight/2, 1, System.currentTimeMillis());
         saiyanButton = new BuyButton(saiyanButtonBit,screenWidth - saiyanButtonBit.getWidth() - 10, screenHeight/2 - 20 - heartBit.getHeight(), 1, System.currentTimeMillis());
         pacButton = new BuyButton(pacmanButtonBit,screenWidth - pacmanButtonBit.getWidth() - 10, screenHeight/2 - 30 - heartBit.getHeight() - saiyanButtonBit.getHeight(), 1, System.currentTimeMillis());
-
+        bombButton = new BuyButton(bombButtonBit, screenWidth - bombButtonBit.getWidth() - 10, screenHeight/2 - 40 - heartBit.getHeight() - saiyanButtonBit.getHeight() - pacmanButtonBit.getHeight(), 1, System.currentTimeMillis());
         character = new Character(characterBit, 0, 300, 6, 14,6,2,2,2,2);
         character.setX(screenWidth/2 - character.getSpriteWidth()/2);
 
@@ -240,6 +247,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             heart.handleActionDown((int) event.getX(), (int) event.getY());
                             saiyanButton.handleActionDown((int) event.getX(), (int) event.getY());
                             pacButton.handleActionDown((int) event.getX(), (int) event.getY());
+                            bombButton.handleActionDown((int) event.getX(), (int) event.getY());
                             if ((numCoins >= heart.getMinCost() && heart.isTouched())  ) {
                                 if (System.currentTimeMillis() > heart.getLastBuy() + 1000) {
                                     health.subtractDamage(5);
@@ -260,13 +268,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setNumUp(2);
                                     character.setNumRight(2);
                                     character.setCurrentFrame(0);
-                                    character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());;
-                                    character.setSpriteHeight(character.getBitmap().getHeight());;
+                                    character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
                                     character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
                                     background.setSpeed(background.getSpeed() + 5);
                                     numCoins-=1;
                                     isSaiyan = true;
                                     isPacman = false;
+                                    isBomb = false;
                                     saiyanButton.setLastBuy(System.currentTimeMillis());
                                 }
                             }
@@ -282,15 +291,36 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setNumUp(4);
                                     character.setNumRight(4);
                                     character.setCurrentFrame(0);
-                                    character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());;
-                                    character.setSpriteHeight(character.getBitmap().getHeight());;
+                                    character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
                                     character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
                                     numCoins -= 1;
                                     isPacman = true;
                                     isSaiyan = false;
+                                    isBomb = false;
                                     pacButton.setLastBuy(System.currentTimeMillis());
                                 }
                             }
+                            else if((numCoins >= bombButton.getMinCost() && bombButton.isTouched())){
+                                if(System.currentTimeMillis() > bombButton.getLastBuy() + 1000) {
+                                    isBomb = true;
+                                    powerupTime = System.currentTimeMillis();
+                                    //insert sound
+                                    character.setBitmap(explosionBit);
+                                    character.setFrameNr(40);
+                                    character.setCurrentFrame(0);
+                                    character.setSpriteWidth(character.getBitmap().getWidth()/character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
+                                    character.setSourceRect(new Rect(0,0,character.getSpriteWidth(),character.getSpriteHeight()));
+                                    numCoins -= 1;
+                                    isPacman = false;
+                                    isSaiyan = false;
+                                    getBombGhosts();
+                                    bombButton.setLastBuy(System.currentTimeMillis());
+
+                                }
+                            }
+
                             else if (System.currentTimeMillis() > lastShot + 1000 && !isPacman) {
                                 if (isSaiyan) {
                                     bulletList.add(new Bullet(saiyanBlastBit, character, 22, event.getX(), event.getY(), 800, true));
@@ -341,6 +371,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     if (isPacman) {
                         isPacman = false;
                         sound.stopWaka();
+                    }
+
+                }
+            }
+            if(isBomb){
+                if(System.currentTimeMillis() > powerupTime + 1000){
+                    if(isSaiyan|| isPacman){
+                        isBomb = false;
+                    }
+                    else {
+
+
+                        character.setBitmap(characterBit);
+                        character.setFrameNr(14);
+                        character.setNumStill(6);
+                        character.setNumDown(2);
+                        character.setNumLeft(2);
+                        character.setNumUp(2);
+                        character.setNumRight(2);
+                        character.setCurrentFrame(0);
+                        character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
+                        ;
+                        character.setSpriteHeight(character.getBitmap().getHeight());
+                        ;
+                        character.setSourceRect(new Rect(0, 0, character.getSpriteWidth(), character.getSpriteHeight()));
+                        isBomb = false;
                     }
                 }
             }
@@ -448,6 +504,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return index;
     }
 
+    public void getBombGhosts() {
+        double distanceX;
+        double distanceY;
+
+        for (int i = 0; i < ghostList.size(); i++) {
+
+            distanceX = ghostList.get(i).getX()+0.5*ghostList.get(i).getSpriteWidth()-(character.getX()+0.5*character.getSpriteWidth());
+            distanceY = ghostList.get(i).getY()+0.5*ghostList.get(i).getSpriteHeight()-(character.getY()+0.5*character.getSpriteHeight());
+            Double dist = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceY, 2));
+            if(dist<350) {
+               ghostList.remove(i);
+               killedGhosts++;
+               score += 1000;
+               i--;
+            }
+        }
+
+    }
+
     public void createGhostMap() {
         if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=(5*difficulty)) {
             Random rand = new Random();
@@ -492,6 +567,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     sound.playScream();
                     killedGhosts++;
                     health.subtractDamage(2);
+                }
+                else if (isBomb){
+
                 }
                 else
                     gameOver = true;
@@ -672,6 +750,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
             if (numCoins >= pacButton.getMinCost()) {
                 pacButton.draw(canvas);
+            }
+            if (numCoins >= bombButton.getMinCost()) {
+                bombButton.draw(canvas);
             }
         }
         canvas.drawText(("0000000000"+displayScore).substring((""+displayScore).length()),health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize() , paint);
