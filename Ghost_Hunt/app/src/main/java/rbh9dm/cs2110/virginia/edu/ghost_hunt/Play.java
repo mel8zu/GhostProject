@@ -20,6 +20,11 @@ public abstract class Play extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (isTaskRoot()) {
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+        }
         mp = MediaPlayer.create(this, R.raw.ghostbusters);
         mp.setLooping(true);
         mp.setVolume(.7F,.7F);
@@ -68,8 +73,11 @@ public abstract class Play extends Activity {
 
     public void onPause() {
         super.onPause();
-         gameView.shutDownThread();
+        gameView.setGameOver(false);
+        gameView.shutDownThread();
+        gameView.recycleBits();
         mp.stop();
+        finish();
     }
 
     public void onResume() {

@@ -31,12 +31,11 @@ public class MainActivity extends ActionBarActivity {
 
         final Context context=this;
 
-        /*MediaPlayer mp = MediaPlayer.create(this, R.raw.ghostbusters);
-        mp.seekTo(10000);
-        //mp.prepareAsync();
-        mp.setLooping(true);
-        mp.setVolume((float)0.5, (float)0.5);
-        mp.start();*/
+        if (isTaskRoot()) {
+            Intent intent = new Intent(context, SplashActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         scoresButton = (Button) findViewById(R.id.score_button);
         scoresButton.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +44,7 @@ public class MainActivity extends ActionBarActivity {
                 Log.i(TAG, "Calling onClick() on score button");
                 Intent intent=new Intent(context, Score.class);
                 startActivity(intent);
+                onPause();
             }
         });
 
@@ -55,6 +55,7 @@ public class MainActivity extends ActionBarActivity {
                 Log.i(TAG, "Calling onClick() on play button");
                 Intent intent=new Intent(context, DifficultyView.class);
                 startActivity(intent);
+                onPause();
             }
         });
     }
@@ -87,5 +88,11 @@ public class MainActivity extends ActionBarActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        finish();
     }
 }

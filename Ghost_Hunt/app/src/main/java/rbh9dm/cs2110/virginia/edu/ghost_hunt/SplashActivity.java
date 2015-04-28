@@ -28,6 +28,7 @@ public class SplashActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash); // Refers to the splash.xml file in the layout directory
         // Start timer and launch main activity
+
         IntentLauncher launcher = new IntentLauncher();
         launcher.start();
     }

@@ -23,6 +23,12 @@ public class Score extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.score);
 
+        if (isTaskRoot()) {
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         DataBaseHandler db = new DataBaseHandler(this);
         Log.i("Score", "created database");
         db.getHighScoreCount();
@@ -86,6 +92,11 @@ public class Score extends ActionBarActivity {
     public void onBackPressed() {
         Intent intent=new Intent(this, MainActivity.class);
         startActivity(intent);
-        startActivity(intent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        finish();
     }
 }

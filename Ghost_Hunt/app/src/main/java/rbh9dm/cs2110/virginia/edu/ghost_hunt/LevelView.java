@@ -30,6 +30,12 @@ public class LevelView extends ActionBarActivity {
 
         final Context context=this;
 
+        if (isTaskRoot()) {
+            Intent intent = new Intent(context, SplashActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         Intent i = getIntent();
         Bundle bundle = i.getExtras();
         Log.i("hi","here is the bundle!! : " + bundle);
@@ -100,7 +106,12 @@ public class LevelView extends ActionBarActivity {
     public void onBackPressed() {
         Intent intent=new Intent(this, MainActivity.class);
         startActivity(intent);
-        startActivity(intent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        finish();
     }
 
 }

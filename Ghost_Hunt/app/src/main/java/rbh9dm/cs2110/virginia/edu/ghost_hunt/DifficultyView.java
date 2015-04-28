@@ -30,6 +30,12 @@ public class DifficultyView extends ActionBarActivity {
 
         final Context context = this;
 
+        if (isTaskRoot()) {
+            Intent intent = new Intent(context, SplashActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         difficultyButton = (Button) findViewById(R.id.d1);
         difficultyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +99,11 @@ public class DifficultyView extends ActionBarActivity {
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        startActivity(intent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        finish();
     }
 }

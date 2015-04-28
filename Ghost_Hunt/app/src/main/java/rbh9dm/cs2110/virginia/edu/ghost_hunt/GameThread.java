@@ -43,7 +43,9 @@ public class GameThread extends Thread {
                     beginTime = System.currentTimeMillis();
                     framesSkipped = 0;
                     this.gameView.update();
-                    this.gameView.draw(canvas);
+                    if (!gameView.getGameOver()) {
+                        this.gameView.draw(canvas);
+                    }
                     timeDiff = System.currentTimeMillis() - beginTime;
                     sleepTime = (int) (FRAME_PERIOD - timeDiff);
                     if (sleepTime > 0) {
