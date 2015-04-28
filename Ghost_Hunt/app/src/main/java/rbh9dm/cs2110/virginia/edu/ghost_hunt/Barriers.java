@@ -3,11 +3,7 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 /**
  * Created by Bryan on 4/15/15.
  */
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
 
 public class Barriers  extends Background  {
 

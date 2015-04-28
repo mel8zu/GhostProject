@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
-    android:background="#ff8fc3ff">
+    android:background="#ff31bfd5">
 
     <EditText
         android:layout_width="match_parent"
@@ -14,32 +14,36 @@
         android:elegantTextHeight="false"
         android:textColor="#ff0016ff"
         android:editable="false"
-        android:textSize="50sp" />
+        android:textSize="45sp" />
 
     <Button
-        android:layout_width="178dp"
-        android:layout_height="117dp"
+        android:layout_width="200sp"
+        android:layout_height="50sp"
         android:text="Easy"
         android:id="@+id/d1"
         android:clickable="false"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25sp"
+        android:textColor="#ffdd54ca" />
 
     <Button
-        android:layout_width="165dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200sp"
+        android:layout_height="50sp"
         android:text="Medium"
         android:id="@+id/d2"
         android:clickable="false"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.24" />
+        android:layout_marginTop="30sp"
+        android:textColor="#ffe49b35" />
 
     <Button
-        android:layout_width="136dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200sp"
+        android:layout_height="50sp"
         android:text="Hard"
         android:id="@+id/d3"
         android:clickable="false"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.24" />
+        android:layout_marginTop="30sp"
+        android:textColor="#ffda1400" />
 
 </LinearLayout>

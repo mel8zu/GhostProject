@@ -3,7 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
-    android:background="#ff8fc3ff">
+    android:background="#ff31bfd5"
+    android:focusable="false">
 
     <EditText
         android:layout_width="match_parent"
@@ -12,34 +13,38 @@
         android:text="Select a Level"
         android:layout_weight="0.2"
         android:elegantTextHeight="false"
-        android:textColor="#ff0016ff"
+        android:textColor="#FFFFFFFF"
         android:editable="false"
         android:textSize="50sp" />
 
     <Button
-        android:layout_width="178dp"
-        android:layout_height="117dp"
+        android:layout_width="200sp"
+        android:layout_height="50sp"
         android:text="Forest"
         android:id="@+id/L1"
         android:clickable="false"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ff009829"
+        android:layout_marginTop="25sp" />
 
     <Button
-        android:layout_width="165dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200sp"
+        android:layout_height="50sp"
         android:text="Winter"
         android:id="@+id/L2"
         android:clickable="false"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.24" />
+        android:textColor="#ff3083ba"
+        android:layout_marginTop="30sp" />
 
     <Button
-        android:layout_width="136dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200sp"
+        android:layout_height="50sp"
         android:text="Desert"
         android:id="@+id/L3"
         android:clickable="false"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.24" />
+        android:textColor="#ffb4a81b"
+        android:layout_marginTop="30sp" />
 
 </LinearLayout>

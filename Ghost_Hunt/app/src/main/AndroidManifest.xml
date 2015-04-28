@@ -46,23 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Play1"
-            android:label="Ghost Hunt">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Play2"
-            android:label="Ghost Hunt">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Play3"
+            android:name=".Play"
             android:label="Ghost Hunt">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

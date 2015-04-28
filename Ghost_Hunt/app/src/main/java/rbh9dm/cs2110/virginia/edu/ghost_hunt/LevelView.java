@@ -48,8 +48,9 @@ public class LevelView extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Calling onClick() on Forrest button");
-                Intent intent = new Intent(context, Play1.class);
+                Intent intent = new Intent(context, Play.class);
                 intent.putExtra("hardness",hardness);
+                intent.putExtra("level" ,1);
                 startActivity(intent);
             }
         });
@@ -60,8 +61,9 @@ public class LevelView extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Calling onClick() on Forrest button");
-                Intent intent=new Intent(context, Play2.class);
+                Intent intent=new Intent(context, Play.class);
                 intent.putExtra("hardness",hardness);
+                intent.putExtra("level" ,2);
                 startActivity(intent);
             }
         });
@@ -72,8 +74,9 @@ public class LevelView extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Calling onClick() on Forrest button");
-                Intent intent=new Intent(context, Play3.class);
+                Intent intent=new Intent(context, Play.class);
                 intent.putExtra("hardness",hardness);
+                intent.putExtra("level" ,3);
                 startActivity(intent);
             }
         });

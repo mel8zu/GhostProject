@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
@@ -15,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -115,7 +115,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     /*
     Constructor: where the stuff that appears on screen is declared
      */
-    public GameView(Context context, int level, int difficulty) {
+    public GameView(Context context, int level, int difficulty, int x, int y) {
         super(context);
         this.difficulty = difficulty;
         this.level = level;
@@ -219,7 +219,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         else  {
             backgroundBit = BitmapFactory.decodeResource(getResources(), R.drawable.forest);
         }
-        background = new Background(backgroundBit, 0, 0, 5);
+        background = new Background(backgroundBit, x, y, 5);
         Objects gem1 = new Objects(BitmapFactory.decodeResource(getResources(), R.drawable.gemresized), 400, 400, background);
         boom = new Boom(explosionBit, 0, 0, 6, 40, 0, background);
 
@@ -287,7 +287,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void moreBarriers() {
-        if (System.currentTimeMillis()>lastAddToNumBarrCanLay + 10000 && (numBarriersCanLay+barrierList.size())<5) {
+        if (System.currentTimeMillis()>lastAddToNumBarrCanLay + 10000 && (numBarriersCanLay+barrierList.size()) < 5) {
+
             numBarriersCanLay++;
             lastAddToNumBarrCanLay = System.currentTimeMillis();
         }
@@ -367,172 +368,172 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     }
                 }*/
 
-                up.handleActionDown((int) event.getX(), (int) event.getY());
-                if (up.isTouched()) {
-                    background.setDirection(1);
+            up.handleActionDown((int) event.getX(), (int) event.getY());
+            if (up.isTouched()) {
+                background.setDirection(1);
+                for (Barriers element : barrierList) {
+                    element.setDirection(1);
+                }
+            } else {
+                left.handleActionDown((int) event.getX(), (int) event.getY());
+                if (left.isTouched()) {
+                    background.setDirection(2);
                     for (Barriers element : barrierList) {
-                        element.setDirection(1);
+                        element.setDirection(2);
                     }
                 } else {
-                    left.handleActionDown((int) event.getX(), (int) event.getY());
-                    if (left.isTouched()) {
-                        background.setDirection(2);
+                    right.handleActionDown((int) event.getX(), (int) event.getY());
+                    if (right.isTouched()) {
+                        background.setDirection(3);
                         for (Barriers element : barrierList) {
-                            element.setDirection(2);
+                            element.setDirection(3);
                         }
                     } else {
-                        right.handleActionDown((int) event.getX(), (int) event.getY());
-                        if (right.isTouched()) {
-                            background.setDirection(3);
+                        down.handleActionDown((int) event.getX(), (int) event.getY());
+                        if (down.isTouched()) {
+                            background.setDirection(4);
                             for (Barriers element : barrierList) {
-                                element.setDirection(3);
+                                element.setDirection(4);
                             }
                         } else {
-                            down.handleActionDown((int) event.getX(), (int) event.getY());
-                            if (down.isTouched()) {
-                                background.setDirection(4);
-                                for (Barriers element : barrierList) {
-                                    element.setDirection(4);
+                            background.setDirection(0);
+                            for (Barriers element : barrierList) {
+                                element.setDirection(0);
+                            }
+                            heart.handleActionDown((int) event.getX(), (int) event.getY());
+                            bulletButton.handleActionDown((int) event.getX(), (int) event.getY());
+                            saiyanButton.handleActionDown((int) event.getX(), (int) event.getY());
+                            pacButton.handleActionDown((int) event.getX(), (int) event.getY());
+                            bombButton.handleActionDown((int) event.getX(), (int) event.getY());
+                            layBarrier.handleActionDown((int) event.getX(), (int) event.getY());
+                            if ((numCoins >= heart.getMinCost() && heart.isTouched())) {
+                                if (System.currentTimeMillis() > heart.getLastBuy() + 1000) {
+                                    health.subtractDamage(20);
+                                    numCoins--;
+                                    heart.setLastBuy(System.currentTimeMillis());
                                 }
-                            } else {
-                                background.setDirection(0);
-                                for (Barriers element : barrierList) {
-                                    element.setDirection(0);
+                            } else if ((numCoins >= bulletButton.getMinCost() && bulletButton.isTouched())) {
+                                if (System.currentTimeMillis() > bulletButton.getLastBuy() + 1000) {
+                                    numCoins--;
+                                    numSuperBullets++;
+                                    bulletButton.setLastBuy(System.currentTimeMillis());
                                 }
-                                heart.handleActionDown((int) event.getX(), (int) event.getY());
-                                bulletButton.handleActionDown((int) event.getX(), (int) event.getY());
-                                saiyanButton.handleActionDown((int) event.getX(), (int) event.getY());
-                                pacButton.handleActionDown((int) event.getX(), (int) event.getY());
-                                bombButton.handleActionDown((int) event.getX(), (int) event.getY());
-                                layBarrier.handleActionDown((int) event.getX(), (int) event.getY());
-                                if ((numCoins >= heart.getMinCost() && heart.isTouched())) {
-                                    if (System.currentTimeMillis() > heart.getLastBuy() + 1000) {
-                                        health.subtractDamage(20);
-                                        numCoins--;
-                                        heart.setLastBuy(System.currentTimeMillis());
+                            } else if ((numCoins >= saiyanButton.getMinCost() && saiyanButton.isTouched())) {
+                                if (System.currentTimeMillis() > saiyanButton.getLastBuy() + 1000) {
+                                    powerupTime = System.currentTimeMillis();
+                                    sound.stopWaka();
+                                    sound.playFlashbang();
+                                    character.setBitmap(saiyanBit);
+                                    character.setFrameNr(14);
+                                    character.setNumStill(6);
+                                    character.setNumDown(2);
+                                    character.setNumLeft(2);
+                                    character.setNumUp(2);
+                                    character.setNumRight(2);
+                                    character.setCurrentFrame(0);
+                                    character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
+                                    character.setSourceRect(new Rect(0, 0, character.getSpriteWidth(), character.getSpriteHeight()));
+                                    background.setSpeed(background.getSpeed() + 5);
+                                    for (Barriers b : barrierList) {
+                                        b.setSpeed(background.getSpeed());
                                     }
-                                } else if ((numCoins >= bulletButton.getMinCost() && bulletButton.isTouched())) {
-                                    if (System.currentTimeMillis() > bulletButton.getLastBuy() + 1000) {
-                                        numCoins--;
-                                        numSuperBullets++;
-                                        bulletButton.setLastBuy(System.currentTimeMillis());
+                                    for (Ghost g : ghostList) {
+                                        if (g instanceof MegaGhost)
+                                            g.setBitmap(megaGhostBit);
+                                        else
+                                            g.setBitmap(ghostBit);
                                     }
-                                } else if ((numCoins >= saiyanButton.getMinCost() && saiyanButton.isTouched())) {
-                                    if (System.currentTimeMillis() > saiyanButton.getLastBuy() + 1000) {
-                                        powerupTime = System.currentTimeMillis();
-                                        sound.stopWaka();
-                                        sound.playFlashbang();
-                                        character.setBitmap(saiyanBit);
-                                        character.setFrameNr(14);
-                                        character.setNumStill(6);
-                                        character.setNumDown(2);
-                                        character.setNumLeft(2);
-                                        character.setNumUp(2);
-                                        character.setNumRight(2);
-                                        character.setCurrentFrame(0);
-                                        character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
-                                        character.setSpriteHeight(character.getBitmap().getHeight());
-                                        character.setSourceRect(new Rect(0, 0, character.getSpriteWidth(), character.getSpriteHeight()));
-                                        background.setSpeed(background.getSpeed() + 5);
+                                    numCoins -= 1;
+                                    isSaiyan = true;
+                                    isPacman = false;
+                                    saiyanButton.setLastBuy(System.currentTimeMillis());
+                                }
+                            } else if ((numCoins >= pacButton.getMinCost() && pacButton.isTouched())) {
+                                if (System.currentTimeMillis() > pacButton.getLastBuy() + 1000) {
+                                    powerupTime = System.currentTimeMillis();
+                                    sound.playWaka();
+                                    character.setBitmap(pacmanBit);
+                                    character.setFrameNr(17);
+                                    character.setNumStill(1);
+                                    character.setNumDown(4);
+                                    character.setNumLeft(4);
+                                    character.setNumUp(4);
+                                    character.setNumRight(4);
+                                    character.setCurrentFrame(0);
+                                    character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
+                                    character.setSpriteHeight(character.getBitmap().getHeight());
+                                    character.setSourceRect(new Rect(0, 0, character.getSpriteWidth(), character.getSpriteHeight()));
+                                    if (isSaiyan) {
+                                        background.setSpeed(background.getSpeed() - 5);
                                         for (Barriers b : barrierList) {
                                             b.setSpeed(background.getSpeed());
                                         }
-                                        for (Ghost g : ghostList) {
-                                            if (g instanceof MegaGhost)
-                                                g.setBitmap(megaGhostBit);
-                                            else
-                                                g.setBitmap(ghostBit);
-                                        }
-                                        numCoins -= 1;
-                                        isSaiyan = true;
-                                        isPacman = false;
-                                        saiyanButton.setLastBuy(System.currentTimeMillis());
                                     }
-                                } else if ((numCoins >= pacButton.getMinCost() && pacButton.isTouched())) {
-                                    if (System.currentTimeMillis() > pacButton.getLastBuy() + 1000) {
-                                        powerupTime = System.currentTimeMillis();
-                                        sound.playWaka();
-                                        character.setBitmap(pacmanBit);
-                                        character.setFrameNr(17);
-                                        character.setNumStill(1);
-                                        character.setNumDown(4);
-                                        character.setNumLeft(4);
-                                        character.setNumUp(4);
-                                        character.setNumRight(4);
-                                        character.setCurrentFrame(0);
-                                        character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
-                                        character.setSpriteHeight(character.getBitmap().getHeight());
-                                        character.setSourceRect(new Rect(0, 0, character.getSpriteWidth(), character.getSpriteHeight()));
-                                        if (isSaiyan) {
-                                            background.setSpeed(background.getSpeed() - 5);
-                                            for (Barriers b : barrierList) {
-                                                b.setSpeed(background.getSpeed());
-                                            }
-                                        }
-                                        for (Ghost g : ghostList) {
-                                            g.setBitmap(blueGhostBit);
-                                        }
-                                        numCoins -= 1;
-                                        isPacman = true;
-                                        isSaiyan = false;
-                                        pacButton.setLastBuy(System.currentTimeMillis());
+                                    for (Ghost g : ghostList) {
+                                        g.setBitmap(blueGhostBit);
                                     }
-                                } else if ((numCoins >= bombButton.getMinCost() && bombButton.isTouched())) {
-                                    if (System.currentTimeMillis() > bombButton.getLastBuy() + 1000 && !isBomb) {
-                                        isBomb = true;
-                                        sound.playBoom();
-                                        boom.setxCoord(character.getX());
-                                        boom.setyCoord(character.getY());
-                                        boom.setCurrentFrame(0);
-                                        numCoins -= 1;
-                                        bombButton.setLastBuy(System.currentTimeMillis());
-                                    }
-                                } else if (layBarrier.isTouched()) {
-                                    barrierMode = !barrierMode;
-                                }else if (barrierMode && numBarriersCanLay>0 && barrierList.size()<5) {
-                                    int x = (int) event.getX();
-                                    int y = (int) event.getY();
-                                    if( Math.sqrt(Math.pow(x - character.getX(),2)+Math.pow(y-character.getY(),2))>150) {
-                                        if (level == 1) {
-                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
-                                        } else if (level == 2) {
-                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.iceresized), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
-                                        } else {
-                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
-                                        }
-                                        numBarriersCanLay--;
-                                    }
-                                }else if (System.currentTimeMillis() > lastShot + 1000 && !isPacman) {
-                                    if (isSaiyan) {
-                                        bulletList.add(new Bullet(saiyanBlastBit, character, 22, event.getX(), event.getY(), 800, true, false));
-                                        sound.playLaser();
-                                        lastShot = System.currentTimeMillis();
-                                    } else if (numSuperBullets > 0) {
-                                        numSuperBullets--;
-                                        bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, true));
-                                        sound.playGun();
-                                        lastShot = System.currentTimeMillis();
+                                    numCoins -= 1;
+                                    isPacman = true;
+                                    isSaiyan = false;
+                                    pacButton.setLastBuy(System.currentTimeMillis());
+                                }
+                            } else if ((numCoins >= bombButton.getMinCost() && bombButton.isTouched())) {
+                                if (System.currentTimeMillis() > bombButton.getLastBuy() + 1000 && !isBomb) {
+                                    isBomb = true;
+                                    sound.playBoom();
+                                    boom.setxCoord(character.getX());
+                                    boom.setyCoord(character.getY());
+                                    boom.setCurrentFrame(0);
+                                    numCoins -= 1;
+                                    bombButton.setLastBuy(System.currentTimeMillis());
+                                }
+                            } else if (layBarrier.isTouched()) {
+                                barrierMode = !barrierMode;
+                            }else if (barrierMode && numBarriersCanLay>0 && barrierList.size()<5) {
+                                int x = (int) event.getX();
+                                int y = (int) event.getY();
+                                if( Math.sqrt(Math.pow(x - character.getX(),2)+Math.pow(y-character.getY(),2))>150) {
+                                    if (level == 1) {
+                                        barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
+                                    } else if (level == 2) {
+                                        barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.iceresized), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
                                     } else {
-                                            bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, false));
-                                            sound.playGun();
-                                            lastShot = System.currentTimeMillis();
+                                        barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
                                     }
+                                    numBarriersCanLay--;
+                                }
+                            }else if (System.currentTimeMillis() > lastShot + 1000 && !isPacman) {
+                                if (isSaiyan) {
+                                    bulletList.add(new Bullet(saiyanBlastBit, character, 22, event.getX(), event.getY(), 800, true, false));
+                                    sound.playLaser();
+                                    lastShot = System.currentTimeMillis();
+                                } else if (numSuperBullets > 0) {
+                                    numSuperBullets--;
+                                    bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, true));
+                                    sound.playGun();
+                                    lastShot = System.currentTimeMillis();
+                                } else {
+                                    bulletList.add(new Bullet(bulletBit, character, 13, event.getX(), event.getY(), 550, false, false));
+                                    sound.playGun();
+                                    lastShot = System.currentTimeMillis();
                                 }
                             }
                         }
                     }
                 }
-
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                background.setDirection(0);
-                for (Barriers element : barrierList) {
-                    element.setDirection(0);
-                }
             }
+
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            background.setDirection(0);
+            for (Barriers element : barrierList) {
+                element.setDirection(0);
+            }
+        }
         //}
 
-            return true;
-        }
+        return true;
+    }
 
 
     /*
@@ -879,7 +880,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 int bY = background.getYCoord();
                 Objects gem =  new Objects(gemBit, rand.nextInt(background.getWidth()-2*gemBit.getWidth())+bX+gemBit.getWidth(), rand.nextInt(background.getHeight()-2*gemBit.getHeight())+bY+gemBit.getHeight(), background);
                 while (character.getHitbox().intersects(gem.getxCoord(), gem.getyCoord(), gem.getxCoord()+gem.getWidth(), gem.getyCoord()+gem.getHeight())) {
-                     gem =  new Objects(gemBit, rand.nextInt(background.getWidth()-2*gemBit.getWidth())+bX+gemBit.getWidth(), rand.nextInt(background.getHeight()-2*gemBit.getHeight())+bY+gemBit.getHeight(), background);
+                    gem =  new Objects(gemBit, rand.nextInt(background.getWidth()-2*gemBit.getWidth())+bX+gemBit.getWidth(), rand.nextInt(background.getHeight()-2*gemBit.getHeight())+bY+gemBit.getHeight(), background);
                 }
                 objectlist.add(gem);
             }
@@ -1007,7 +1008,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             killedGhosts++;
                             health.subtractDamage(2);
                         }
-                         else {
+                        else {
                             if (((MegaGhost) ghostList.get(i)).getGhostDamage() == 1) {
                                 int coinX = ghostList.get(i).getX();
                                 int coinY = ghostList.get(i).getY();
@@ -1143,7 +1144,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
      */
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawColor(Color.BLACK);
+        if(level == 2) canvas.drawARGB(255,60,155,213);
+        else if(level == 1) canvas.drawARGB(255,31,110,37);
+        else canvas.drawARGB(255,213,193,174);
+
         if (!gameOver) {
             try {
                 background.draw(canvas);
@@ -1215,6 +1219,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText(("0000000000" + displayScore).substring(("" + displayScore).length()), health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize(), paint);
         canvas.drawText("" + numCoins, health.getX(), health.getY() + health.getHealth().getHeight() + 2 * paint.getTextSize(), paint);
         canvas.drawText("" + numSuperBullets, health.getX(), health.getY() + health.getHealth().getHeight() + 3 * paint.getTextSize(), paint);
+
         }
 
 
@@ -1298,6 +1303,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.difficulty = difficulty;
     }
 
+    public int getBackgroundX() {
+        return background.getXCoord();
+    }
+
+    public void setBackgroundX(int x) {
+        this.background.setXCoord(x);
+    }
+
+    public int getBackgroundY() {
+        return background.getYCoord();
+    }
+
+    public void setBackgroundY(int y) {
+        this.background.setYCoord(y);
+    }
+
+
     public void recycleBits() {
         saiyanBit.recycle();
         saiyanBit = null;
@@ -1355,4 +1377,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void restartThread() {
         thread.setRunning(true);
     }
+
 }

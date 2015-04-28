@@ -34,7 +34,7 @@ public class PauseScreen extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Calling onClick() on Return to Game Button");
-                Intent intent = new Intent(context, Play1.class);
+                Intent intent = new Intent(context, Play.class);
                 startActivity(intent);
             }
         });
