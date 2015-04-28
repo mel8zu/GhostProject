@@ -123,12 +123,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         rand = new Random();
         barrierMode = false;
         if (difficulty == 1 || difficulty == 2) {
-            maxNumGhosts = 5;
+            maxNumGhosts = 6;
             maxRandGhostSpeed = 3;
             minGhostSpeed = 5;
         }
         else {
-            maxNumGhosts = 7;
+            maxNumGhosts = 8;
             maxRandGhostSpeed = 4;
             minGhostSpeed = 7;
         }
@@ -414,8 +414,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                 }
                             } else if ((numCoins >= bulletButton.getMinCost() && bulletButton.isTouched())) {
                                 if (System.currentTimeMillis() > bulletButton.getLastBuy() + 1000) {
-                                    numCoins--;
-                                    numSuperBullets++;
+                                    numCoins--;                                    numSuperBullets++;
+
                                     bulletButton.setLastBuy(System.currentTimeMillis());
                                 }
                             } else if ((numCoins >= saiyanButton.getMinCost() && saiyanButton.isTouched())) {
@@ -819,7 +819,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             distanceX = ghostList.get(i).getX() + 0.5 * ghostList.get(i).getSpriteWidth() - (boom.getCenterX());
             distanceY = ghostList.get(i).getY() + 0.5 * ghostList.get(i).getSpriteHeight() - (boom.getCenterY());
             Double dist = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
-            if (dist < 350) {
+            if (dist < 200) {
                 ghostList.remove(i);
                 killedGhosts++;
                 score += 1000;
@@ -864,7 +864,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void createGhostMap() {
-        if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=maxNumGhosts) {
+        if ((displayScore / 1000)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=maxNumGhosts) {
             Ghost ghost1 = null;
             MegaGhost megaGhost1 = null;
             if (isPacman) {

@@ -84,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
                     int health = Integer.parseInt(in[5]);
                     int score = Integer.parseInt(in[6]);
                     int displayScore = Integer.parseInt(in[7]);
-//                    int killedGhosts = Integer.parseInt(in[8]);
+                    int killedGhosts = Integer.parseInt(in[8]);
 
                     intent.putExtra("level", level);
                     intent.putExtra("hardness",difficulty);
@@ -94,11 +94,11 @@ public class MainActivity extends ActionBarActivity {
                     intent.putExtra("health",health);
                     intent.putExtra("score",score);
                     intent.putExtra("displayScore",displayScore);
-//                    intent.putExtra("killedGhosts",killedGhosts);
-                } catch (java.io.IOException e) {
+                    intent.putExtra("killedGhosts",killedGhosts);
+                    startActivity(intent);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                startActivity(intent);
             }
         });
     }
@@ -131,5 +131,11 @@ public class MainActivity extends ActionBarActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        finish();
     }
 }

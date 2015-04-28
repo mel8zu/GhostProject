@@ -3,6 +3,8 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
@@ -46,10 +48,10 @@ public class Play extends Activity {
         if(bundle.containsKey("x")) x = (Integer) bundle.get("x");
         if(bundle.containsKey("y")) y = (Integer) bundle.get("y");
         gameView = new GameView(this, level, hardness,x,y);
-        int damage = 0;
-        if(bundle.containsKey("health")) damage = (Integer) bundle.get("health");
-        Log.i("damage", ((Integer) damage).toString());
-        gameView.getHealth().addDamage(damage);
+        if(bundle.containsKey("health")) {
+            Log.i("***********************","reading health from file " + bundle.get("health"));
+            gameView.getHealth().setDamage((Integer) bundle.get("health"));
+        }
         if(bundle.containsKey("coins")) gameView.setNumCoins((Integer) bundle.get("coins"));
         if(bundle.containsKey("score")) gameView.setScore((Integer) bundle.get("score"));
         if(bundle.containsKey("displayScore")) gameView.setDisplayScore((Integer) bundle.get("displayScore"));
@@ -97,7 +99,9 @@ public class Play extends Activity {
         int coins = gv.getNumCoins();
         int x = gv.getBackgroundX();
         int y = gv.getBackgroundY();
-        int health = gv.getHealth().getDamage();
+        int littleiHealth = gv.getHealth().getDamage();
+        Integer health = (Integer) littleiHealth;
+        Log.i("***********************","Reading in health " + health);
         int score = (int) gv.getScore();
         int displayScore = (int) gv.getDisplayScore();
         int killedGhosts = gv.getKilledGhosts();
@@ -110,7 +114,7 @@ public class Play extends Activity {
 
             everything = ((Integer) level).toString() + "," + ((Integer) difficulty).toString() + "," + ((Integer) coins).toString() +
                     "," + ((Integer) x).toString() + "," + ((Integer) y).toString() +
-                    "," + ((Integer) health).toString() + ((Integer) score).toString() + "," + ((Integer) displayScore).toString()
+                    "," + health + "," + ((Integer) score).toString() + "," + ((Integer) displayScore).toString()
                     + "," + ((Integer) killedGhosts).toString();
             outputStream.write(everything);
             outputStream.close();

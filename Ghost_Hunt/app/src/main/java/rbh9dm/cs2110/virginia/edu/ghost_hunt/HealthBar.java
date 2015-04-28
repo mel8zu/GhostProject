@@ -83,7 +83,7 @@ public class HealthBar {
             return false;
         }
         else {
-            this.damage = health.getWidth()-1;
+            this.damage = health.getWidth()- 1;
             this.sourceRect.set(0, 0, 1, health.getHeight());
             return true;
         }
