@@ -434,7 +434,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     character.setSpriteWidth(character.getBitmap().getWidth() / character.getFrameNr());
                                     character.setSpriteHeight(character.getBitmap().getHeight());
                                     character.setSourceRect(new Rect(0, 0, character.getSpriteWidth(), character.getSpriteHeight()));
-                                    background.setSpeed(background.getSpeed() + 5);
+                                    if (!isSaiyan) {
+                                        background.setSpeed(background.getSpeed() + 5);
+                                    }
                                     for (Barriers b : barrierList) {
                                         b.setSpeed(background.getSpeed());
                                     }
