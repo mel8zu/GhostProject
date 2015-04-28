@@ -27,11 +27,7 @@ public class Play extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (isTaskRoot()) {
-            Intent intent = new Intent(this, SplashActivity.class);
-            startActivity(intent);
-            finish();
-        }
+
         mp = MediaPlayer.create(this, R.raw.ghostbusters);
         mp.setLooping(true);
         mp.setVolume(.6F,.6F);
