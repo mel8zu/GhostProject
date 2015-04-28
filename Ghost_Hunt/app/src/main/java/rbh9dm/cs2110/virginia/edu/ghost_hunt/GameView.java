@@ -329,7 +329,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             speed = rand.nextInt(maxRandGhostSpeed-1) + minGhostSpeed-2;
             angle = rand.nextDouble() * 6;
 
-            MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed-2, angle, background);
+            MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(megaGhost1);
         }
     }

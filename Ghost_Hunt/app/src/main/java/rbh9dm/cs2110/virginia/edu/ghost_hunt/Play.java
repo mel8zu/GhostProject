@@ -48,7 +48,8 @@ public class Play extends Activity {
         gameView = new GameView(this, level, hardness,x,y);
         int damage = 0;
         if(bundle.containsKey("health")) damage = (Integer) bundle.get("health");
-        gameView.getHealth().addDamage(damage/10);
+        Log.i("damage", ((Integer) damage).toString());
+        gameView.getHealth().addDamage(damage);
         if(bundle.containsKey("coins")) gameView.setNumCoins((Integer) bundle.get("coins"));
         if(bundle.containsKey("score")) gameView.setScore((Integer) bundle.get("score"));
         if(bundle.containsKey("displayScore")) gameView.setDisplayScore((Integer) bundle.get("displayScore"));
