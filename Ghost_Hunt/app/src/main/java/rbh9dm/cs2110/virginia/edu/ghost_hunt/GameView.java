@@ -74,6 +74,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Rect gRectLeft;
     private Rect gRectRight;
     private Rect gRectBottom;
+    private int numBarriersCanLay;
+    private long lastAddToNumBarrCanLay;
 
     private Bitmap characterBit;
     private Bitmap ghostBit;
@@ -141,6 +143,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gRectLeft = new Rect(0,0,0,0);;
         gRectRight = new Rect(0,0,0,0);;
         gRectBottom = new Rect(0,0,0,0);;
+        numBarriersCanLay = 5;
+        lastAddToNumBarrCanLay = System.currentTimeMillis();
 
         ghostBit = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
         megaGhostBit = BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost);
@@ -266,6 +270,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             } catch(InterruptedException e) {
 
             }
+        }
+    }
+
+    public void moreBarriers() {
+        if (System.currentTimeMillis()>lastAddToNumBarrCanLay + 10000 && (numBarriersCanLay+barrierList.size())<5) {
+            numBarriersCanLay++;
+            lastAddToNumBarrCanLay = System.currentTimeMillis();
         }
     }
 
@@ -464,17 +475,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                     }
                                 } else if (layBarrier.isTouched()) {
                                     barrierMode = !barrierMode;
-                                }else if (barrierMode) {
+                                }else if (barrierMode && numBarriersCanLay>0 && barrierList.size()<5) {
                                     int x = (int) event.getX();
                                     int y = (int) event.getY();
-                                    if( Math.sqrt(Math.pow(x - character.getX(),2)+Math.pow(y-character.getY(),2))>150 && barrierList.size()<5) {
+                                    if( Math.sqrt(Math.pow(x - character.getX(),2)+Math.pow(y-character.getY(),2))>150) {
                                         if (level == 1) {
-                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), (int) event.getX(), (int) event.getY(), background.getSpeed()));
+                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
                                         } else if (level == 2) {
-                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.iceresized), (int) event.getX(), (int) event.getY(), background.getSpeed()));
+                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.iceresized), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
                                         } else {
-                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), (int) event.getX(), (int) event.getY(), background.getSpeed()));
+                                            barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.cactusresizedd), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
                                         }
+                                        numBarriersCanLay--;
                                     }
                                 }else if (System.currentTimeMillis() > lastShot + 1000 && !isPacman) {
                                     if (isSaiyan) {
@@ -555,39 +567,45 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if (boom.getCurrentFrame()==30)
                     isBomb = false;
             }
+            moreBarriers();
 
-            for(int j = 0; j<barrierList.size(); j++){
-                for(int i = 0; i < ghostList.size(); i++) {
-                    Barriers barrier = barrierList.get(j);
-                    Ghost g = ghostList.get(i);
-                    Rect rect = new Rect(barrier.getXCoord(), barrier.getYCoord(), barrier.getXCoord() + barrier.getWidth(),barrier.getYCoord() + barrier.getHeight());
-                    Rect gBox = g.getHitbox();
-                    if ( rect.intersect(gBox)) {
-                        if (rect.width()*rect.height() > 0.50 * g.getSpriteWidth() * g.getSpriteHeight()) {
-                            ghostList.remove(i);
-                            i--;
-                        }
-                        else {
-                            rectTop.set(barrier.getXCoord(), barrier.getYCoord(), barrier.getXCoord() + barrier.getWidth(),barrier.getYCoord() + 15);
-                            rectLeft.set(barrier.getXCoord(), barrier.getYCoord(), barrier.getXCoord() + 15,barrier.getYCoord() + barrier.getHeight());
-                            rectRight.set(barrier.getXCoord()+barrier.getWidth()-15, barrier.getYCoord(), barrier.getXCoord() + barrier.getWidth(),barrier.getYCoord() + barrier.getHeight());
-                            rectBottom.set(barrier.getXCoord(), barrier.getYCoord()+barrier.getHeight()-15, barrier.getXCoord() + barrier.getWidth(),barrier.getYCoord() + barrier.getHeight());
-                            gRectTop.set(g.getX(), g.getY(), g.getX() + g.getSpriteWidth(), g.getY()+15);
-                            gRectLeft.set(g.getX(), g.getY(), g.getX() + 15, g.getY() + g.getSpriteHeight());
-                            gRectRight.set(g.getX()+g.getSpriteWidth()-15,g.getY(),g.getX() + g.getSpriteWidth(),g.getY()+g.getSpriteHeight());
-                            gRectBottom.set(g.getX(),g.getY()+g.getSpriteHeight()-15,g.getX()+g.getSpriteWidth(),+g.getY()+g.getSpriteHeight());
+            for(int j = 0; j<barrierList.size(); j++) {
+                if (System.currentTimeMillis() > barrierList.get(j).getCreated() + 15000) {
+                    barrierList.remove(j);
+                    j--;
+                }
+                else {
+                    for (int i = 0; i < ghostList.size(); i++) {
+                        Barriers barrier = barrierList.get(j);
+                        Ghost g = ghostList.get(i);
+                        Rect rect = new Rect(barrier.getXCoord(), barrier.getYCoord(), barrier.getXCoord() + barrier.getWidth(), barrier.getYCoord() + barrier.getHeight());
+                        Rect gBox = g.getHitbox();
+                        if (rect.intersect(gBox)) {
+                            if (rect.width() * rect.height() > 0.50 * g.getSpriteWidth() * g.getSpriteHeight()) {
+                                ghostList.remove(i);
+                                i--;
+                            } else {
+                                rectTop.set(barrier.getXCoord(), barrier.getYCoord(), barrier.getXCoord() + barrier.getWidth(), barrier.getYCoord() + 15);
+                                rectLeft.set(barrier.getXCoord(), barrier.getYCoord(), barrier.getXCoord() + 15, barrier.getYCoord() + barrier.getHeight());
+                                rectRight.set(barrier.getXCoord() + barrier.getWidth() - 15, barrier.getYCoord(), barrier.getXCoord() + barrier.getWidth(), barrier.getYCoord() + barrier.getHeight());
+                                rectBottom.set(barrier.getXCoord(), barrier.getYCoord() + barrier.getHeight() - 15, barrier.getXCoord() + barrier.getWidth(), barrier.getYCoord() + barrier.getHeight());
+                                gRectTop.set(g.getX(), g.getY(), g.getX() + g.getSpriteWidth(), g.getY() + 15);
+                                gRectLeft.set(g.getX(), g.getY(), g.getX() + 15, g.getY() + g.getSpriteHeight());
+                                gRectRight.set(g.getX() + g.getSpriteWidth() - 15, g.getY(), g.getX() + g.getSpriteWidth(), g.getY() + g.getSpriteHeight());
+                                gRectBottom.set(g.getX(), g.getY() + g.getSpriteHeight() - 15, g.getX() + g.getSpriteWidth(), +g.getY() + g.getSpriteHeight());
 
-                            if (Rect.intersects(rectTop,gRectBottom))
-                                g.negYVelocity();
-                            if (Rect.intersects(rectBottom,gRectTop))
-                                g.posYVelocity();
-                            if (Rect.intersects(rectLeft,gRectRight))
-                                g.negXVelocity();
-                            if (Rect.intersects(rectRight,gRectLeft))
-                                g.posXVelocity();
+                                if (Rect.intersects(rectTop, gRectBottom))
+                                    g.negYVelocity();
+                                if (Rect.intersects(rectBottom, gRectTop))
+                                    g.posYVelocity();
+                                if (Rect.intersects(rectLeft, gRectRight))
+                                    g.negXVelocity();
+                                if (Rect.intersects(rectRight, gRectLeft))
+                                    g.posXVelocity();
+                            }
                         }
+
                     }
-
                 }
             }
             for (Barriers element : barrierList) {
@@ -1177,6 +1195,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 if (barrierMode)
                     canvas.drawBitmap(redXBit, layBarrier.getX(), layBarrier.getY(), null);
+                canvas.drawText(""+numBarriersCanLay, layBarrier.getX(), layBarrier.getY() + paint.getTextSize() + Math.max(barrierMap.getHeight(),redXBit.getHeight()),paint);
             } catch (Exception e) {
                 Log.i("draw", "can't draw right now");
             }
@@ -1184,7 +1203,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText(("0000000000" + displayScore).substring(("" + displayScore).length()), health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize(), paint);
         canvas.drawText("" + numCoins, health.getX(), health.getY() + health.getHealth().getHeight() + 2 * paint.getTextSize(), paint);
         canvas.drawText("" + numSuperBullets, health.getX(), health.getY() + health.getHealth().getHeight() + 3 * paint.getTextSize(), paint);
-
         }
 
 
