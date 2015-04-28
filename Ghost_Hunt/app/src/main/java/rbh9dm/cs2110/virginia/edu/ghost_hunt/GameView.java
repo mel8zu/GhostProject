@@ -1217,8 +1217,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
         canvas.drawText(("0000000000" + displayScore).substring(("" + displayScore).length()), health.getX(), health.getY() + health.getHealth().getHeight() + paint.getTextSize(), paint);
-        canvas.drawText("" + numCoins, health.getX(), health.getY() + health.getHealth().getHeight() + 2 * paint.getTextSize(), paint);
-        canvas.drawText("" + numSuperBullets, health.getX(), health.getY() + health.getHealth().getHeight() + 3 * paint.getTextSize(), paint);
+        canvas.drawText("Coins: " + numCoins, health.getX(), health.getY() + health.getHealth().getHeight() + 2 * paint.getTextSize(), paint);
+        canvas.drawText("F.Bullets: " + numSuperBullets, health.getX(), health.getY() + health.getHealth().getHeight() + 3 * paint.getTextSize(), paint);
 
         }
 
