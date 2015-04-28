@@ -73,12 +73,17 @@ public class HealthBar {
     }
 
     public boolean setDamage(int damage) {
-        this.damage = damage;
-        if (damage < health.getWidth()) {
+        if (damage<=0) {
+            this.damage = 0;
+            return false;
+        }
+        else if (damage < health.getWidth()) {
+            this.damage = damage;
             this.sourceRect.set(0, 0, health.getWidth() - damage, health.getHeight());
             return false;
         }
         else {
+            this.damage = health.getWidth()-1;
             this.sourceRect.set(0, 0, 1, health.getHeight());
             return true;
         }
