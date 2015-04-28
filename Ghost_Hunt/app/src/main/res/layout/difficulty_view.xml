@@ -12,7 +12,11 @@
         android:text="Select a Difficulty"
         android:layout_weight="0.2"
         android:elegantTextHeight="false"
+<<<<<<< HEAD
         android:textColor="#FFFFFFFF"
+=======
+        android:textColor="#ffffffff"
+>>>>>>> origin/project
         android:editable="false"
         android:textSize="45sp" />
 
