@@ -495,7 +495,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             }else if (barrierMode && numBarriersCanLay>0 && barrierList.size()<5) {
                                 int x = (int) event.getX();
                                 int y = (int) event.getY();
-                                if( Math.sqrt(Math.pow(x - character.getX(),2)+Math.pow(y-character.getY(),2))>150) {
+                                if( Math.sqrt(Math.pow(x - character.getX(),2)+Math.pow(y-character.getY(),2))>2*character.getSpriteWidth()) {
                                     if (level == 1) {
                                         barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
                                     } else if (level == 2) {
@@ -821,7 +821,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             distanceX = ghostList.get(i).getX() + 0.5 * ghostList.get(i).getSpriteWidth() - (boom.getCenterX());
             distanceY = ghostList.get(i).getY() + 0.5 * ghostList.get(i).getSpriteHeight() - (boom.getCenterY());
             Double dist = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
-            if (dist < 200) {
+            if (dist < 3*character.getSpriteWidth()) {
                 ghostList.remove(i);
                 killedGhosts++;
                 score += 1000;

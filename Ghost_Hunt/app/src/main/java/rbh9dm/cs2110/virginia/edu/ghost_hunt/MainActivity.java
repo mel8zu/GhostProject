@@ -65,10 +65,9 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Log.i(TAG, "Calling onClick() on load button");
                 Intent intent=new Intent(context, Play.class);
-//                intent.putExtra("hardness",1);
-//                intent.putExtra("level",1);
 
                 try {
+
                     BufferedReader inputReader = new BufferedReader(new InputStreamReader(
                             openFileInput("data.csv")));
                     String line = inputReader.readLine();
@@ -133,9 +132,4 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        finish();
-    }
 }

@@ -3,8 +3,6 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
@@ -52,6 +50,7 @@ public class Play extends Activity {
             Log.i("***********************","reading health from file " + bundle.get("health"));
             gameView.getHealth().setDamage((Integer) bundle.get("health"));
         }
+        if(bundle.containsKey("health")) gameView.getHealth().addDamage((Integer) bundle.get("health"));
         if(bundle.containsKey("coins")) gameView.setNumCoins((Integer) bundle.get("coins"));
         if(bundle.containsKey("score")) gameView.setScore((Integer) bundle.get("score"));
         if(bundle.containsKey("displayScore")) gameView.setDisplayScore((Integer) bundle.get("displayScore"));
@@ -128,11 +127,8 @@ public class Play extends Activity {
                     null);
 
         }
-        catch (IOException e)
-        {
-            Log.e("com", "Unable to write to the TraceFile.csv file.");
+        catch (IOException e) {
         }
-
     }
 
     @Override
@@ -161,5 +157,6 @@ public class Play extends Activity {
             gameView.restartThread();
         }
     };
+
 
 }

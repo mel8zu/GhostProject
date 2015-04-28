@@ -3,7 +3,6 @@ package rbh9dm.cs2110.virginia.edu.ghost_hunt;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 
 /**
  * Created by Student User on 4/12/2015.
@@ -26,6 +25,7 @@ public class HealthBar {
         this.sourceRect = new Rect(0,0,health.getWidth(),health.getHeight());
         this.damage = 0;
         this.healthLevel = healthLevel;
+
     }
 
     public int getX() {
