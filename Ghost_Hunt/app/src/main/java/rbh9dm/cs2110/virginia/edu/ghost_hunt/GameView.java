@@ -311,7 +311,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         while (ghostList.size() < 4) {
             int x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
             int y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
-            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 200) {
+            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 2.5*character.getSpriteWidth()) {
                 x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
                 y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
             }
@@ -322,7 +322,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
             y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
-            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 200) {
+            while(Math.sqrt(Math.pow(x-character.getX(),2) + Math.pow(y-character.getY(),2)) < 2.5*character.getSpriteWidth()) {
                 x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
                 y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
             }
@@ -894,7 +894,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public Ghost generateGhost(Bitmap bit) {
         int x = rand.nextInt(background.getWidth() - Math.max(bit.getWidth(), bit.getWidth())) + background.getXCoord();
         int y = rand.nextInt(background.getHeight() - Math.max(bit.getHeight(), bit.getHeight())) + background.getYCoord();
-        while (Math.sqrt(Math.pow(x - character.getX(), 2) + Math.pow(y - character.getY(), 2)) < 200) {
+        while (Math.sqrt(Math.pow(x - character.getX(), 2) + Math.pow(y - character.getY(), 2)) < 2.5*character.getSpriteWidth()) {
             x = rand.nextInt(background.getWidth() - Math.max(bit.getWidth(), bit.getWidth())) + background.getXCoord();
             y = rand.nextInt(background.getHeight() - Math.max(bit.getHeight(), bit.getHeight())) + background.getYCoord();
         }
