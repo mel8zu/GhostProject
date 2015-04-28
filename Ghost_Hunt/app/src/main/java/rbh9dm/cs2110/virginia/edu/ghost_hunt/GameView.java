@@ -1321,6 +1321,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.background.setYCoord(y);
     }
 
+    public int getSuperBullets() { return numSuperBullets; }
+
+    public void setSuperBullets(int numSuperBullets) { this.numSuperBullets = numSuperBullets; }
+
 
     public void recycleBits() {
         saiyanBit.recycle();

@@ -51,7 +51,7 @@ public class Play extends Activity {
         if(bundle.containsKey("score")) gameView.setScore((Integer) bundle.get("score"));
         if(bundle.containsKey("displayScore")) gameView.setDisplayScore((Integer) bundle.get("displayScore"));
         if(bundle.containsKey("killedGhosts")) gameView.setKilledGhosts((Integer) bundle.get("killedGhosts"));
-
+        if(bundle.containsKey("super")) gameView.setSuperBullets((Integer) bundle.get("super"));
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(gameView);
@@ -100,6 +100,7 @@ public class Play extends Activity {
         int score = (int) gv.getScore();
         int displayScore = (int) gv.getDisplayScore();
         int killedGhosts = gv.getKilledGhosts();
+        int superBullets = gv.getSuperBullets();
         try
         {
 
@@ -110,7 +111,7 @@ public class Play extends Activity {
             everything = ((Integer) level).toString() + "," + ((Integer) difficulty).toString() + "," + ((Integer) coins).toString() +
                     "," + ((Integer) x).toString() + "," + ((Integer) y).toString() +
                     "," + health + "," + ((Integer) score).toString() + "," + ((Integer) displayScore).toString()
-                    + "," + ((Integer) killedGhosts).toString();
+                    + "," + ((Integer) killedGhosts).toString() + "," + superBullets;
             outputStream.write(everything);
             outputStream.close();
             // Refresh the data so it can seen when the device is plugged in a

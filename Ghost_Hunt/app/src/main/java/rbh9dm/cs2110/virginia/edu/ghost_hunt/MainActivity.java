@@ -84,6 +84,7 @@ public class MainActivity extends ActionBarActivity {
                     int score = Integer.parseInt(in[6]);
                     int displayScore = Integer.parseInt(in[7]);
                     int killedGhosts = Integer.parseInt(in[8]);
+                    int numSuper = Integer.parseInt(in[9]);
 
                     intent.putExtra("level", level);
                     intent.putExtra("hardness",difficulty);
@@ -94,6 +95,7 @@ public class MainActivity extends ActionBarActivity {
                     intent.putExtra("score",score);
                     intent.putExtra("displayScore",displayScore);
                     intent.putExtra("killedGhosts",killedGhosts);
+                    intent.putExtra("super", numSuper);
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
