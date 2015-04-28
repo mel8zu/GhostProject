@@ -132,4 +132,10 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        finish();
+    }
+
 }
