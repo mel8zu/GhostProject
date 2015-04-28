@@ -12,7 +12,7 @@
         android:text="Select a Difficulty"
         android:layout_weight="0.2"
         android:elegantTextHeight="false"
-        android:textColor="#ff0016ff"
+        android:textColor="#ffffffff"
         android:editable="false"
         android:textSize="45sp" />
 

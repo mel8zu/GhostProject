@@ -101,7 +101,7 @@ public class LevelView extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(this, MainActivity.class);
+        Intent intent=new Intent(this, DifficultyView.class);
         startActivity(intent);
     }
 

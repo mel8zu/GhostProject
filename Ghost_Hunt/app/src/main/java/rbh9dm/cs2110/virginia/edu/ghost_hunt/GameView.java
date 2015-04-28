@@ -495,7 +495,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             }else if (barrierMode && numBarriersCanLay>0 && barrierList.size()<5) {
                                 int x = (int) event.getX();
                                 int y = (int) event.getY();
-                                if( Math.sqrt(Math.pow(x - character.getX(),2)+Math.pow(y-character.getY(),2))>2*character.getSpriteWidth()) {
+                                if( Math.sqrt(Math.pow(x - character.getX(),2)+Math.pow(y-character.getY(),2))>1.25*character.getSpriteWidth()) {
                                     if (level == 1) {
                                         barrierList.add(new Barriers(BitmapFactory.decodeResource(getResources(), R.drawable.smallstone), (int) event.getX(), (int) event.getY(), background.getSpeed(),System.currentTimeMillis()));
                                     } else if (level == 2) {
