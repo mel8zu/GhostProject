@@ -108,6 +108,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean barrierMode;
     private Bitmap redXBit;
     private Bitmap gemBit;
+    private int maxNumGhosts;
+    private int maxRandGhostSpeed;
+    private int minGhostSpeed;
 
     /*
     Constructor: where the stuff that appears on screen is declared
@@ -119,6 +122,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         rand = new Random();
         barrierMode = false;
+        if (difficulty == 1 || difficulty == 2) {
+            maxNumGhosts = 5;
+            maxRandGhostSpeed = 3;
+            minGhostSpeed = 5;
+        }
+        else {
+            maxNumGhosts = 7;
+            maxRandGhostSpeed = 4;
+            minGhostSpeed = 7;
+        }
 
         paint = new Paint();
         paint.setColor(Color.WHITE);
@@ -301,7 +314,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
                 y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
             }
-            int speed = rand.nextInt(3) + difficulty * 2 + 2;
+            int speed = rand.nextInt(maxRandGhostSpeed) + minGhostSpeed;
             double angle = rand.nextDouble()*6;
             Ghost ghost1 = new Ghost(BitmapFactory.decodeResource(getResources(), R.drawable.ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed, angle, background);
             ghostList.add(ghost1);
@@ -312,6 +325,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 x = rand.nextInt(background.getWidth() - Math.max(ghostBit.getWidth(), megaGhostBit.getWidth())) + background.getXCoord();
                 y = rand.nextInt(background.getHeight() - Math.max(ghostBit.getHeight(), megaGhostBit.getHeight())) + background.getYCoord();
             }
+            speed = rand.nextInt(maxRandGhostSpeed-1) + minGhostSpeed-2;
             angle = rand.nextDouble() * 6;
 
             MegaGhost megaGhost1 = new MegaGhost(BitmapFactory.decodeResource(getResources(), R.drawable.mega_ghost), x, y, 6, 9, 1, 2, 2, 2, 2, speed-2, angle, background);
@@ -849,7 +863,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void createGhostMap() {
-        if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=(5*difficulty)) {
+        if ((displayScore / 400)*level  > ghostList.size() + killedGhosts*.568 && ghostList.size()<=maxNumGhosts) {
             Ghost ghost1 = null;
             MegaGhost megaGhost1 = null;
             if (isPacman) {
@@ -881,7 +895,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             x = rand.nextInt(background.getWidth() - Math.max(bit.getWidth(), bit.getWidth())) + background.getXCoord();
             y = rand.nextInt(background.getHeight() - Math.max(bit.getHeight(), bit.getHeight())) + background.getYCoord();
         }
-        int speed = rand.nextInt(3) + difficulty * 2 + 2;
+        int speed = rand.nextInt(maxRandGhostSpeed) + minGhostSpeed;
         double angle = rand.nextDouble() * 6;
         Ghost ghost1 = new Ghost(bit, x, y, 6, 9, 1, 2, 2, 2, 2, speed, angle, background);
         return ghost1;
@@ -894,7 +908,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             x = rand.nextInt(background.getWidth() - Math.max(bit.getWidth(), bit.getWidth())) + background.getXCoord();
             y = rand.nextInt(background.getHeight() - Math.max(bit.getHeight(), bit.getHeight())) + background.getYCoord();
         }
-        int speed = rand.nextInt(3) + difficulty * 2 + 2;
+        int speed = rand.nextInt(maxRandGhostSpeed - 1) + minGhostSpeed - 2;
         double angle = rand.nextDouble() * 6;
         MegaGhost ghost1 = new MegaGhost(bit, x, y, 6, 9, 1, 2, 2, 2, 2, speed, angle, background);
         return ghost1;
@@ -922,28 +936,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     killedGhosts++;
                     health.subtractDamage(2);
                 }
-                else
+                else if (difficulty>1)
                     gameOver = true;
             } else if (Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)) < 2 * character.getSpriteWidth()) {
-                double random = rand.nextDouble();
-                if (isPacman) {
-                    if (random < 0.15) {
-                        if (ghostList.get(index) instanceof MegaGhost) {
-                            gameOver = health.addDamage(2 * difficulty);
-                            alertList.add(alert);
-                        } else {
-                            gameOver = health.addDamage(difficulty);
-                            alertList.add(alert);
+                alertList.add(alert);
+                if (difficulty>1) {
+                    double random = rand.nextDouble();
+                    if (isPacman) {
+                        if (random < 0.15) {
+                            if (ghostList.get(index) instanceof MegaGhost) {
+                                gameOver = health.addDamage(2);
+                            } else {
+                                gameOver = health.addDamage(1);
+                            }
                         }
-                    }
-                }
-                else if (random < .33) {
-                    if (ghostList.get(index) instanceof MegaGhost) {
-                        gameOver = health.addDamage(2 * difficulty);
-                        alertList.add(alert);
-                    } else {
-                        gameOver = health.addDamage(difficulty);
-                        alertList.add(alert);
+                    } else if (random < .33) {
+                        if (ghostList.get(index) instanceof MegaGhost) {
+                            gameOver = health.addDamage(2);
+                        } else {
+                            gameOver = health.addDamage(1);
+                        }
                     }
                 }
 
